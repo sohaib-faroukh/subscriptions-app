@@ -35,5 +35,5 @@ Run `npm build` to build the project
 
 ### For help
 
-Please contact [Sohaib Faroukh](https://github.com/sohaib-faroukh).
+Please contact [Sohaib Faroukh](https://github.com/sohaib-faroukh) [Email](mailto:so.872562@gmail.com).
 
