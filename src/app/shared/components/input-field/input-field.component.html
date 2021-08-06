@@ -1,0 +1,30 @@
+<div class="mb-1">
+
+
+	<div class="input-group">
+		<!-- [(ngModel)]="value"  -->
+		<label *ngIf="isWithLabel && label" for="exampleFormControlInput1" class="form-label">{{label}}</label>
+		<input [type]="type" [formControl]="control!" class="form-control" [name]="name || 'text-field'"
+			[placeholder]="placeholder || '...'" data-toggle="password" [ngClass]=" { 
+				'is-invalid': (control?.dirty || control?.touched)  && fieldErrors,
+				'is-valid': (control?.dirty || control?.touched)  && !fieldErrors
+			}">
+		<ng-container *ngIf="isPassword">
+			<a (click)="togglePassword()" style="cursor: pointer;">
+				<i class="fa fa-eye-slash m-3 fa-lg" *ngIf="type==='password';else hidePasswordIconRef"> </i>
+				<ng-template #hidePasswordIconRef> <i class="fa fa-eye m-3 fa-lg"> </i></ng-template>
+			</a>
+		</ng-container>
+	</div>
+
+	<ng-container *ngIf="isWithErrorMessage">
+
+		<div class="row">
+			<span [ngClass]="(control?.dirty || control?.touched)  && fieldErrors ? 'show':'hide' "
+				class="mx-2 mt-1 text-danger">
+				&nbsp;{{getErrorMessage()}}
+			</span>
+		</div>
+
+	</ng-container>
+</div>

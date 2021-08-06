@@ -1,0 +1,5 @@
+1. The Shared module should not have any dependency on any of the other modules in the application.
+
+
+2. The commonly required angular modules like ( CommonModule, FormsModule, etc) or third party modules can be imported here and re-exported. 
+The other module importing the shared module does not have to import those modules

@@ -1,0 +1,19 @@
+{
+  "name": "subscriptions-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "ts-node index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sohaib-faroukh/subscriptions-app.git"
+  },
+  "author": "sohaib_faroukh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sohaib-faroukh/subscriptions-app/issues"
+  },
+  "homepage": "https://github.com/sohaib-faroukh/subscriptions-app#readme"
+}
