@@ -32,8 +32,10 @@ Run `npm start` for a dev server. Navigate to `http://localhost:3000`. The app w
 
 Run `npm build` to build the project
 
+### create DB migration file
+Run `typeorm migration:create -- -n <migration-file-name>` 
 
-### For help
+## For help
 
-Please contact [Sohaib Faroukh](https://github.com/sohaib-faroukh) [Email](mailto:so.872562@gmail.com).
+Please contact [Sohaib Faroukh](https://github.com/sohaib-faroukh) 
 
