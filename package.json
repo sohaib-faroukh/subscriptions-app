@@ -5,10 +5,10 @@
 	"scripts": {
 		"ng": "ng",
 		"tsc": "tsc",
-		"start": "node dist/api/server/index.js",
-		"justRunServer": "ts-node server/index.ts",
+		"start": "node dist/server.js",
+		"justRunServer": "ts-node server.ts",
 		"build-server": "npm run tsc",
-		"server": "nodemon --exec ts-node server/index.ts",
+		"server": "nodemon --exec ts-node server.ts",
 		"build": "ng build --prod",
 		"test": "ng test",
 		"lint": "ng lint",

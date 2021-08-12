@@ -1,8 +1,8 @@
-import { environment } from './environments/environment';
+import { environment } from './server/environments/environment';
 import * as express from 'express';
 import { Router } from 'express';
-import { getAccounts, postAccount } from './routes/account.routes';
-import { DB } from './configurations/db';
+import { getAccounts, postAccount } from './server/routes/account.routes';
+import { DB } from './server/configurations/db';
 
 // import { createConnection } from 'typeorm';
 
