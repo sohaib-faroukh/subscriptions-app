@@ -5,7 +5,8 @@
 	"scripts": {
 		"ng": "ng",
 		"tsc": "tsc",
-		"start": "cd dist & node server.js",
+		"node-run": "node server.js",
+		"start": "cd dist && node server.js",
 		"justRunServer": "ts-node server.ts",
 		"build-server": "npm run tsc",
 		"server": "nodemon --exec ts-node server.ts",

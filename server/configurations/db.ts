@@ -1,7 +1,6 @@
-
-import { environment } from '../environments/environment';
 import { createConnection, ConnectionOptions, Connection } from 'typeorm';
 import 'reflect-metadata';
+import { getEnvironment } from '../environments/env.util';
 
 export class DB {
 
@@ -15,7 +14,7 @@ export class DB {
 	}
 
 	private static createDBConnection = async () => {
-		const connectionConfigs = environment.db as ConnectionOptions;
+		const connectionConfigs = getEnvironment().db as ConnectionOptions;
 		return new Promise<Connection>( async ( resolve, reject ) => {
 			try {
 				const conn = await createConnection( connectionConfigs/*connectionConfigs*/ );
