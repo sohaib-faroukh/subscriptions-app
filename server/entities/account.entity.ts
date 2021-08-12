@@ -1,5 +1,5 @@
 import { EntitySchema, EntitySchemaColumnOptions } from 'typeorm';
-import { Account } from '../../../models/account';
+import { Account } from 'models/account';
 import { BaseColumnSchemaPart } from '../models-schema/schema';
 
 export const AccountEntity = new EntitySchema<Account>( {
@@ -38,7 +38,7 @@ export const AccountEntity = new EntitySchema<Account>( {
 			default: 'personal',
 		} as EntitySchemaColumnOptions,
 		lastLoginAt: {
-			name: 'type',
+			name: 'last_login_at',
 			type: 'text',
 			nullable: false,
 			default: 'personal',

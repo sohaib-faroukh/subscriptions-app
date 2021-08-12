@@ -1,5 +1,5 @@
 import { EntitySchema, EntitySchemaColumnOptions } from 'typeorm';
-import { Subscription } from '../../../models/subscription';
+import { Subscription } from 'models/subscription';
 import { BaseColumnSchemaPart } from '../models-schema/schema';
 
 export const SubscriptionEntity = new EntitySchema<Subscription>( {
@@ -13,12 +13,12 @@ export const SubscriptionEntity = new EntitySchema<Subscription>( {
 		} as EntitySchemaColumnOptions,
 		firstParty: {
 			name: 'first_party',
-			type: 'text',
+			type: 'uuid',
 			nullable: false,
 		} as EntitySchemaColumnOptions,
 		secondParty: {
 			name: 'second_party',
-			type: 'text',
+			type: 'uuid',
 			nullable: false,
 		} as EntitySchemaColumnOptions,
 	},

@@ -1,5 +1,5 @@
-import { EntitySchema, EntitySchemaColumnOptions, getRepository } from 'typeorm';
-import { Subscription } from '../../../models/subscription';
+import { EntitySchemaColumnOptions } from 'typeorm';
+
 
 
 export const BaseColumnSchemaPart = {
