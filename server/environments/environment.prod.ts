@@ -10,13 +10,15 @@ export const environment = {
 	db: {
 		name: 'default',
 		type: 'postgres',
-		host: 'ec2-54-90-211-192.compute-1.amazonaws.com',
-		port: 5432,
-		username: 'zrmqljheotuzhz',
-		password: 'e81308a30e70a61f5f5bc0442aa9f7533c394a23203d445bc0f2e12d1dc7ac77',
-		database: 'de0uu7hc0d5n07',
+		url: process.env.DATABASE_URL,
 		synchronize: true,
 		logger: 'debug',
+		ssl: {
+			ca: process.env.SSL_CERT,
+		},
+		extra: {
+			ssl: true,
+		},
 		entities: [
 			'server/entities',
 			'server/entities/**/*.js',

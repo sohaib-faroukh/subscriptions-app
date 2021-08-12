@@ -6,8 +6,9 @@ import { getEnvironment } from './server/environments/env.util';
 
 // import { createConnection } from 'typeorm';
 
-const ANGULAR_DIST_FILES = getEnvironment()?.ANGULAR_DIST_FILES;
-const port = getEnvironment().PORT || 8081;
+const env = process.argv?.includes( '--production' ) ? getEnvironment( 'prod' ) : getEnvironment();
+const ANGULAR_DIST_FILES = env?.ANGULAR_DIST_FILES;
+const port = env.PORT || 8081;
 
 
 // Define the routes
@@ -38,11 +39,13 @@ app.use( apiRoutes );
 
 
 DB.getInstance().then( c => {
-
 	console.log( '***** The connection with db is created *****' );
-
-	app.listen( port, () => {
-		console.log( `***** THE APP IS RUNNING ON PORT #${ port } *****` );
+} )
+	.catch( error => {
+		console.error( error );
+	} )
+	.finally( () => {
+		app.listen( port, () => {
+			console.log( `***** THE APP IS RUNNING ON PORT #${ port } *****` );
+		} );
 	} );
-
-} );
