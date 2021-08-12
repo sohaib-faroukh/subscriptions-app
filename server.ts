@@ -7,7 +7,7 @@ import { DB } from './server/configurations/db';
 // import { createConnection } from 'typeorm';
 
 const ANGULAR_DIST_FILES = {
-	path: 'dist/subscriptions-web-ui',
+	path: 'subscriptions-web-ui',
 	rootFile: 'index.html',
 };
 const port = environment.PORT || 8081;
