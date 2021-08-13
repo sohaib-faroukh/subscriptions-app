@@ -10,11 +10,12 @@
 		"justRunServer": "ts-node server.ts",
 		"build-server": "npm run tsc",
 		"server": "nodemon --exec ts-node server.ts",
-		"build": "ng build --prod",
+		"ng-build": "ng build --prod",
 		"test": "ng test",
 		"lint": "ng lint",
 		"e2e": "ng e2e",
-		"heroku-postbuild": "npm-run-all build build-server"
+		"build": "npm-run-all ng-build build-server",
+		"heroku-postbuild": "npm run build"
 	},
 	"private": true,
 	"dependencies": {
