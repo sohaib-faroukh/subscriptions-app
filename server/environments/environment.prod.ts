@@ -9,16 +9,11 @@ export const environment = {
 	},
 	db: {
 		name: 'default',
-		type: 'postgres',
-		url: process.env.DATABASE_URL,
+		type: 'mongodb',
+		database: 'subscriptions-dev',
+		url: 'mongodb+srv://sohaib:sohaib@cluster-sohaib-1.sbmtr.mongodb.net/sohaib-database?retryWrites=true&w=majority',
 		synchronize: true,
 		logger: 'debug',
-		ssl: {
-			ca: process.env.SSL_CERT,
-		},
-		extra: {
-			ssl: true,
-		},
 		entities: [
 			'server/entities',
 			'server/entities/**/*.js',

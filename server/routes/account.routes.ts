@@ -22,7 +22,9 @@ export const getAccounts: RequestHandler[] = [
 				start: req?.query?.start ? Number( req?.query?.start ) : defaultQueryParam?.start,
 			} as Required<QueryParam>;
 
-			const accounts: Account[] = await ( await accountRepo() )?.find( { take: query.take, skip: ( query.take * query.start ) } ) || [];
+			const repo = ( await accountRepo() );
+			const accounts: Account[] = await repo?.find( { take: query.take, skip: ( query.take * query.start ) } ) || [];
+			// const accounts: Account[] = await repo?.find() || [];
 
 			res.status( 200 ).json( { code: 200, data: accounts, message: 'accounts fetched' } );
 		}

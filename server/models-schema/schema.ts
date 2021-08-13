@@ -7,6 +7,7 @@ export const BaseColumnSchemaPart = {
 		name: 'id',
 		type: 'uuid',
 		primary: true,
+		objectId: true,
 	} as EntitySchemaColumnOptions,
 	createdAt: {
 		name: 'created_at',
