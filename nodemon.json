@@ -5,7 +5,8 @@
 		"server/**/*",
 		"models/**/*",
 		"utils/**/*",
-		"server.ts"
+		"server.ts",
+		"credentials.ts"
 	],
 	"ignore": [
 		".git",
