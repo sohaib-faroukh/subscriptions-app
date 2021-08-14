@@ -7,6 +7,17 @@ export const environment = {
 		path: 'subscriptions-web-ui',
 		rootFile: 'index.html',
 	},
+	storageBucket: '',
+	firebase: {
+		apiKey: 'AIzaSyCRywAGSIRsV50pevaHGZR0AywhvZ5K3Yg',
+		authDomain: 'subs-app-dev.firebaseapp.com',
+		databaseURL: 'https://subs-app-dev-default-rtdb.asia-southeast1.firebasedatabase.app',
+		projectId: 'subs-app-dev',
+		storageBucket: 'subs-app-dev.appspot.com',
+		messagingSenderId: '844562369446',
+		appId: '1:844562369446:web:a853348f4d02545a12dd67',
+		measurementId: 'G-ZGBZNSN736',
+	},
 	db: {
 		name: 'default',
 		type: 'mongodb',

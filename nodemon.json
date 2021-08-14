@@ -4,7 +4,8 @@
 	"watch": [
 		"server/**/*",
 		"models/**/*",
-		"utils/**/*"
+		"utils/**/*",
+		"server.ts"
 	],
 	"ignore": [
 		".git",
