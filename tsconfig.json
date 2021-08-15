@@ -27,5 +27,9 @@
 		"strictInputAccessModifiers": true,
 		"strictTemplates": true,
 		"fullTemplateTypeCheck": true,
-	}
+	},
+	"exclude": [
+		"node_modules",
+		".vscode"
+	]
 }

@@ -3,15 +3,14 @@ import { Router } from 'express';
 import { getAccounts, postAccount } from './server/routes/account.routes';
 import { getEnvironment } from './server/environments/env.util';
 import { cors } from './utils/cors.util';
-import { googleCredentials } from './credentials';
-import { db } from './utils/firebase.util';
+import { db } from './server/configurations/db';
 
 // import { createConnection } from 'typeorm';
 
 const env = process.argv?.includes( '--production' ) ? getEnvironment( 'prod' ) : getEnvironment();
 const ANGULAR_DIST_FILES = env?.ANGULAR_DIST_FILES;
 const PORT = env.PORT || 8081;
-const credentials = googleCredentials;
+
 
 // Define the routes
 
@@ -37,46 +36,16 @@ expressApp.use( express.json() );
 expressApp.use( apiRoutes );
 
 const bootstrapTheApp = async () => {
-	try {
-		expressApp.listen( PORT, async () => {
-			console.log( `\n***** THE APP IS RUNNING ON PORT #${ PORT } *****\n` );
+	expressApp.listen( PORT, async () => {
+		console.log( `\n***** THE APP IS RUNNING ON PORT #${ PORT } *****\n` );
 
-			await db.app.auth().signInWithEmailAndPassword( credentials.email, credentials.password );
-			console.log( `\n***** FIREBASE IS AUTHENTICATED *****\n` );
+		console.log( '( JSON.stringify(( await db ).collections ) : ' );
 
-			const testRes = ( await db.ref( `first_ref` ).once( 'value' ) ).val();
-			console.log( 'testRes :', JSON.stringify( testRes ) );
+		// TODO: test mongo db
+		// const d = ( await db ). );
 
-
-		} );
-
-	} catch ( error ) {
-		console.error( error );
-		console.log( `\n***** FIREBASE IS NOT AUTHENTICATED *****\n`, JSON.stringify( error ) );
-	}
+	} );
 };
 bootstrapTheApp();
 
 export const app = expressApp;
-
-
-// export const app = FB_FUNC.https.onRequest( expressApp );
-
-
-// Serve only the static files form the dist directory
-
-
-
-// ! DB then listen
-// DB.getInstance().then( c => {
-// 	console.log( '***** The connection with db is created *****' );
-// } )
-// 	.catch( error => {
-// 		console.error( error );
-// 	} )
-// 	.finally( () => {
-// 		app.listen( port, () => {
-// 			console.log( `***** THE APP IS RUNNING ON PORT #${ port } *****` );
-// 		} );
-// 	} );
-

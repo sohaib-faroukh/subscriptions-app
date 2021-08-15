@@ -23,7 +23,7 @@ export const getAccounts: RequestHandler[] = [
 			} as Required<QueryParam>;
 
 			const repo = ( await accountRepo() );
-			const accounts: Account[] = await repo?.find( { take: query.take, skip: ( query.take * query.start ) } ) || [];
+			const accounts: Account[] = []; // await repo?.find( { take: query.take, skip: ( query.take * query.start ) } ) || [];
 			// const accounts: Account[] = await repo?.find() || [];
 
 			res.status( 200 ).json( { code: 200, data: accounts, message: 'accounts fetched' } );
@@ -54,7 +54,7 @@ export const postAccount: RequestHandler[] = [
 			payload.updatedAt = current;
 
 			const newAccount: Account = payload as Account;
-			const addedAccount = await ( await accountRepo() )?.save( newAccount );
+			const addedAccount: any[] = []; // await ( await accountRepo() )?.save( newAccount );
 
 			res.status( 200 ).json( { code: 200, data: addedAccount, message: 'account is inserted' } );
 		}
@@ -71,7 +71,7 @@ export const postAccount: RequestHandler[] = [
 	},
 
 ];
-const getLoggedInAccount = async (): Promise<Account> => {
-	const account: Account = ( await ( await accountRepo() )?.find( { where: { email: 'sohaib.faroukh@gmail.com' } } ) || [] )[ 0 ];
+const getLoggedInAccount = async (): Promise<Account | undefined> => {
+	const account: Account | undefined = undefined; // ( await ( await accountRepo() )?.find( { where: { email: 'sohaib.faroukh@gmail.com' } } ) || [] )[ 0 ];
 	return account;
 };
