@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { Account } from '../../models/account';
-import { accountRepo } from '../repositories/account.repo';
+import { Account, IAccount } from '../../models/account';
+import { AccountRepo } from '../repositories/account.repo';
 import { getCurrent } from '../../utils/date';
 import { uuid } from '../../utils/uuid';
 import { QueryParam } from '../../utils/query-param';
@@ -22,8 +22,8 @@ export const getAccounts: RequestHandler[] = [
 				start: req?.query?.start ? Number( req?.query?.start ) : defaultQueryParam?.start,
 			} as Required<QueryParam>;
 
-			const repo = ( await accountRepo() );
-			const accounts: Account[] = []; // await repo?.find( { take: query.take, skip: ( query.take * query.start ) } ) || [];
+			const repo = ( await AccountRepo.findAll() );
+			const accounts: Account[] = repo || []; // await repo?.find( { take: query.take, skip: ( query.take * query.start ) } ) || [];
 			// const accounts: Account[] = await repo?.find() || [];
 
 			res.status( 200 ).json( { code: 200, data: accounts, message: 'accounts fetched' } );
@@ -53,10 +53,11 @@ export const postAccount: RequestHandler[] = [
 			payload.isCorporate ||= false;
 			payload.updatedAt = current;
 
-			const newAccount: Account = payload as Account;
-			const addedAccount: any[] = []; // await ( await accountRepo() )?.save( newAccount );
+			const newAccount: IAccount = payload as IAccount;
+			const result = ( await AccountRepo.insert( newAccount ) ) || null;
 
-			res.status( 200 ).json( { code: 200, data: addedAccount, message: 'account is inserted' } );
+
+			res.status( 200 ).json( { code: 200, data: result, message: 'account is inserted' } );
 		}
 		catch ( err ) {
 			console.error( err );

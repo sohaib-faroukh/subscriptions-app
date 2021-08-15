@@ -3,6 +3,9 @@ import { Router } from 'express';
 import { getAccounts, postAccount } from './server/routes/account.routes';
 import { getEnvironment } from './server/environments/env.util';
 import { cors } from './utils/cors.util';
+import { getCurrent } from './utils/date';
+import { uuid } from './utils/uuid';
+import { AccountModel } from './server/models-schema/account.schema';
 import { db } from './server/configurations/db';
 
 // import { createConnection } from 'typeorm';
@@ -39,10 +42,18 @@ const bootstrapTheApp = async () => {
 	expressApp.listen( PORT, async () => {
 		console.log( `\n***** THE APP IS RUNNING ON PORT #${ PORT } *****\n` );
 
-		console.log( '( JSON.stringify(( await db ).collections ) : ' );
+		console.log( '\n***** TEST DB *****\n' );
 
-		// TODO: test mongo db
-		// const d = ( await db ). );
+		await db.then( r => {
+			console.log( `\n***** DB CONNECTED *****\n` );
+		} ).catch( err => {
+			console.log( `\n***** DB CONNECTION FAILED *****\n`, err );
+		} );
+
+
+
+		console.log( `\n***** DONE *****\n` );
+
 
 	} );
 };

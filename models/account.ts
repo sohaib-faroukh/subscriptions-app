@@ -1,7 +1,19 @@
 
-import { IdentityWithLogInfo } from './generics/IdentityWithLogInfo';
+import { IdentityWithLogInfo, IIdentityWithLogInfo } from './generics/IdentityWithLogInfo';
 
-export class Account extends IdentityWithLogInfo {
+export interface IAccount extends IIdentityWithLogInfo {
+	firstName: string;
+	lastName?: string;
+	username?: string
+	email: string;
+	password?: string;
+	token?: string;
+	type: 'corporate' | 'personal';
+	lastLoginAt?: string;
+	isCorporate: boolean;
+}
+
+export class Account extends IdentityWithLogInfo implements IAccount {
 	firstName: string = '';
 	lastName?: string = '';
 	username?: string = '';
@@ -12,3 +24,4 @@ export class Account extends IdentityWithLogInfo {
 	lastLoginAt?: string = '';
 	isCorporate: boolean = false;
 }
+
