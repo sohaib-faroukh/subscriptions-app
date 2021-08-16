@@ -3,10 +3,8 @@ import { Router } from 'express';
 import { getAccounts, postAccount } from './server/routes/account.routes';
 import { getEnvironment } from './server/environments/env.util';
 import { cors } from './utils/cors.util';
-import { getCurrent } from './utils/date';
-import { uuid } from './utils/uuid';
-import { AccountModel } from './server/models-schema/account.schema';
 import { db } from './server/configurations/db';
+import * as logger from 'morgan';
 
 // import { createConnection } from 'typeorm';
 
@@ -20,6 +18,8 @@ const PORT = env.PORT || 8081;
 const apiRoutes: Router = Router();
 
 // Accounts routes
+apiRoutes.route( '/api/auth/new' ).post( postAccount );
+
 apiRoutes.route( '/api/accounts' ).get( getAccounts ).post( postAccount );
 
 apiRoutes.route( '/*' ).get( ( req, res ) =>
@@ -35,6 +35,7 @@ expressApp.use( cors );
 expressApp.use( express.static( ANGULAR_DIST_FILES.path ) );
 expressApp.use( express.urlencoded( { limit: '200mb', extended: true } ) );
 expressApp.use( express.json() );
+expressApp.use( logger( 'short' ) );
 // expressApp.use( errorHandler);
 expressApp.use( apiRoutes );
 

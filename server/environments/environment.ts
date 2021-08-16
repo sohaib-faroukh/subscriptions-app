@@ -5,6 +5,10 @@ export const environment = {
 		path: 'dist/subscriptions-web-ui',
 		rootFile: 'index.html',
 	},
+	auth: {
+		secret: process.env.JWT_SECRET,
+		jwtTokenLifeTime: '100',
+	},
 	storageBucket: '',
 	db: {
 		name: 'default',

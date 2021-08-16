@@ -1,16 +1,18 @@
-import { AccountModel } from '../models-schema/account.schema';
+import { AccountModel, IAccountDocument } from '../models-schema/account.schema';
 import { getCurrent } from '../../utils/date';
 import { uuid } from '../../utils/uuid';
-import { IAccount } from '../../models/account';
 
 export class AccountRepo {
 	static model = AccountModel;
 
-	static findAll = async () => {
-		return ( await AccountRepo.model.find() );
+	static findAll = async ( filters?: any ) => {
+		return ( await AccountRepo.model.find( filters ) );
+	}
+	static findById = async ( id: string ) => {
+		return ( await AccountRepo.model.findById( id ) );
 	}
 
-	static insert = async ( data: IAccount ) => {
+	static insert = async ( data: IAccountDocument ): Promise<IAccountDocument> => {
 		const ID = uuid();
 		const current = getCurrent();
 		const newAccount = new AccountModel( {
