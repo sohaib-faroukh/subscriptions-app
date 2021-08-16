@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { IAccount } from 'models/account';
 import { PasswordRegexMap } from 'src/app/core/configurations/password-regexps';
-import { User } from 'src/app/core/models/user';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 
 @Component( {
@@ -15,23 +16,25 @@ export class SignUpComponent implements OnInit {
 	passwordFormControl: FormControl = new FormControl( '', [ Validators.required ] );
 	constructor (
 		private fb: FormBuilder,
-		public auth: AuthenticationService
+		public auth: AuthenticationService,
+		public router: Router,
 	) { }
 
 	ngOnInit (): void {
 		this.form = this.buildFrom();
 	}
 
-	get formValue (): User {
-		return this.form?.value as User;
+	get formValue (): IAccount {
+		return this.form?.value as IAccount;
 	}
 
-	private buildFrom = ( user?: User ) => {
+	private buildFrom = ( user?: IAccount ) => {
 		return this.fb.group( {
 			firstName: [ user?.firstName || '', [ Validators.required, Validators.maxLength( 50 ), Validators.minLength( 2 ) ] ],
 			lastName: [ user?.lastName || '', [ Validators.required, Validators.maxLength( 50 ), Validators.minLength( 2 ) ] ],
 			email: [ user?.email || '', [ Validators.required, Validators.email ] ],
 			password: [ user?.password || '', [ Validators.required, Validators.pattern( PasswordRegexMap.strong.pattern ) ] ],
+			type: [ 'personal', [ Validators.required ] ],
 		} );
 	}
 
@@ -41,8 +44,15 @@ export class SignUpComponent implements OnInit {
 
 	onSubmit = async () => {
 		try {
-			alert( 'submitted' );
-			await this.auth.signUp( this.formValue ).toPromise();
+			const toSubmitValue = { ...this.formValue } as IAccount;
+			toSubmitValue.type ||= 'personal';
+
+			await ( this.auth.signUp( toSubmitValue ).toPromise() );
+
+			this.router.navigate( [ '/home' ] );
+			alert( 'login successfully' );
+
+
 		} catch ( error ) {
 			alert( 'failed to login' );
 		}
