@@ -4,7 +4,7 @@
 
 export const environment = {
 	production: false,
-	port: 8080,
+	storagePrefix: 'X_dev_app_subs',
 };
 
 /*

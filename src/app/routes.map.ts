@@ -4,4 +4,5 @@ export const ROUTES_MAP = {
 	docs: 'docs',
 	login: 'login',
 	signUp: 'sign-up',
+	home: 'home',
 };

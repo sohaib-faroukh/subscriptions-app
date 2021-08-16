@@ -8,6 +8,21 @@
 					<div class="card-body container">
 						<h4 class="card-title text-primary-1">{{'Sign up' | uppercase}}</h4>
 						<p class="card-text text-primary">Create a new account...</p>
+
+						<div class="row pb-2 mb-3">
+							<div class="input-group align-items-center">
+								<span>Account Type: </span>
+								<div class="form-check">
+									<select class="form-select" placeholder="Corporate Account" [formControlName]="'type'"
+										name="type-select-name">
+										<option [ngValue]="'personal'">Personal</option>
+										<option [ngValue]="'corporate'">Corporate</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+
 						<div class="row">
 							<app-input-field [placeholder]="'First Name'" [isWithLabel]="false" [formControlName]="'firstName'">
 							</app-input-field>

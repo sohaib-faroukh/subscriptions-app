@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IAccount } from 'models/account';
 import { PasswordRegexMap } from 'src/app/core/configurations/password-regexps';
-import { Account } from 'src/app/core/models/account';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 
 @Component( {
@@ -21,10 +21,10 @@ export class LoginComponent implements OnInit {
 		this.form = this.buildFrom();
 	}
 
-	get fromValue (): Account {
-		return this.form?.value as Account;
+	get fromValue (): IAccount {
+		return this.form?.value as IAccount;
 	}
-	private buildFrom = ( user?: Account ) => {
+	private buildFrom = ( user?: IAccount ) => {
 		return this.fb.group( {
 			email: [ user?.email || '', [ Validators.required, Validators.email ] ],
 			password: [ '', [ Validators.required, Validators.pattern( PasswordRegexMap.strong.pattern ) ] ],

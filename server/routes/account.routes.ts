@@ -1,9 +1,14 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { Account, IAccount } from '../../models/account';
+import { IAccount } from '../../models/account';
 import { AccountRepo } from '../repositories/account.repo';
 import { getCurrent } from '../../utils/date';
 import { uuid } from '../../utils/uuid';
 import { QueryParam } from '../../utils/query-param';
+import { body } from 'express-validator';
+import { requestValidator } from '../../utils/request-validator.util';
+import { requestResponder } from '../../utils/request-responder.util';
+import { generateAuthToken, verifyAuthToken } from '../../utils/jwt.util';
+import { IAccountDocument } from '../../server/models-schema/account.schema';
 
 
 
@@ -12,67 +17,61 @@ import { QueryParam } from '../../utils/query-param';
  */
 
 export const getAccounts: RequestHandler[] = [
-	async ( req: Request, res: Response, next: NextFunction ) => {
-		try {
 
-			const defaultQueryParam = QueryParam.getDefault();
-			const query: Required<QueryParam> = {
-				...QueryParam.getDefault(),
-				take: req?.query?.take ? Number( req?.query?.take ) : defaultQueryParam?.take,
-				start: req?.query?.start ? Number( req?.query?.start ) : defaultQueryParam?.start,
-			} as Required<QueryParam>;
+	requestResponder( async ( req: Request, res: Response, next: NextFunction ) => {
 
-			const repo = ( await AccountRepo.findAll() );
-			const accounts: Account[] = repo || []; // await repo?.find( { take: query.take, skip: ( query.take * query.start ) } ) || [];
-			// const accounts: Account[] = await repo?.find() || [];
+		const defaultQueryParam = QueryParam.getDefault();
+		const query: Required<QueryParam> = {
+			...QueryParam.getDefault(),
+			take: req?.query?.take ? Number( req?.query?.take ) : defaultQueryParam?.take,
+			start: req?.query?.start ? Number( req?.query?.start ) : defaultQueryParam?.start,
+		} as Required<QueryParam>;
 
-			res.status( 200 ).json( { code: 200, data: accounts, message: 'accounts fetched' } );
-		}
-		catch ( err ) {
-			console.error( err );
-			res.status( err.status || 500 ).
-				json( {
-					code: err.status || 500,
-					data: {},
-					message: '',
-					error: err.message || 'Failed to fetch accounts',
-				} );
-		}
-	},
+		const repo = ( await AccountRepo.findAll() );
+		const accounts: IAccountDocument[] = repo || [];
+
+		return accounts;
+
+	} ),
 
 ];
 export const postAccount: RequestHandler[] = [
-	async ( req: Request, res: Response, next: NextFunction ) => {
-		try {
-			const payload = req?.body as Partial<Account>;
-			const current = getCurrent();
-			payload.createdAt = current;
-			payload.createdBy = ( await getLoggedInAccount() )?.id;
-			payload.id = uuid();
-			payload.type ||= 'personal';
-			payload.isCorporate ||= false;
-			payload.updatedAt = current;
+	body( 'email' ).exists().isEmail(),
+	body( 'firstName' ).exists().isString(),
+	body( 'lastName' ).optional().isString(),
+	body( 'username' ).optional().isString(),
+	body( 'password' ).exists().isString(),
+	body( 'type' ).custom( ( e: string ) => [ 'corporate', 'personal' ].includes( e ) ),
+	requestValidator,
+	requestResponder( async ( req: Request, res: Response, next: NextFunction ) => {
 
-			const newAccount: IAccount = payload as IAccount;
-			const result = ( await AccountRepo.insert( newAccount ) ) || null;
+		const payload = req?.body as Partial<IAccount>;
+		const current = getCurrent();
+		payload.createdAt = current;
+		payload.createdBy = ( await getLoggedInAccount( req.headers.authorization ) )?.id;
+		payload.id = uuid();
+		payload.type ||= 'personal';
+		payload.isCorporate ||= false;
+		payload.updatedAt = current;
 
+		const newAccount: IAccountDocument = payload as IAccountDocument;
+		newAccount.token = generateAuthToken( newAccount );
 
-			res.status( 200 ).json( { code: 200, data: result, message: 'account is inserted' } );
-		}
-		catch ( err ) {
-			console.error( err );
-			res.status( err.status || 500 ).
-				json( {
-					code: err.status || 500,
-					data: {},
-					message: '',
-					error: err.message || 'Failed to insert the account',
-				} );
-		}
-	},
+		const result = ( await AccountRepo.insert( newAccount ) ) || null;
+		delete result.password;
+
+		return result;
+
+	} ),
 
 ];
-const getLoggedInAccount = async (): Promise<Account | undefined> => {
-	const account: Account | undefined = undefined; // ( await ( await accountRepo() )?.find( { where: { email: 'sohaib.faroukh@gmail.com' } } ) || [] )[ 0 ];
-	return account;
+
+const getLoggedInAccount = async ( token: string | undefined ): Promise<IAccount | null> => {
+	if ( !token ) return null;
+	const account = verifyAuthToken( token );
+	if ( account ) {
+		return AccountRepo.findById( account._id ) || null;
+	}
+	else return null;
+
 };
