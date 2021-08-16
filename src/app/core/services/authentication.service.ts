@@ -10,7 +10,7 @@ import { saveToStorage } from '../utils/local-storage.util';
 @Injectable()
 export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchOptions> {
 
-	apiUrl = 'http://localhost:4500/api/accounts';
+	apiUrl = 'api/accounts';
 	tokenStorageKey = 'app_jwt_token';
 	auth$ = new BehaviorSubject<string>( '' );
 
