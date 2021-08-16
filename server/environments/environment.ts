@@ -10,6 +10,6 @@ export const environment = {
 		name: 'default',
 		type: 'mongodb',
 		database: 'subscriptions-dev',
-		url: '',
+		url: process.env.MONGO_DB_URL,
 	},
 };
