@@ -1,5 +1,5 @@
 export const environment = {
 	production: true,
-	apiBaseUrl: 'http://localhost:4500/',
+	apiBaseUrl: '',
 	storagePrefix: 'X_prod_app_subs',
 };

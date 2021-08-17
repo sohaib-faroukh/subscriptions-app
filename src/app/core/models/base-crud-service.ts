@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { errorCatcher } from 'utils/error-catcher.util';
 import { HttpSearchOptions } from './http-search-options';
 
@@ -9,12 +10,18 @@ import { HttpSearchOptions } from './http-search-options';
  * and you need to set apiUrl value before constructor declaration
  */
 export abstract class BaseCrudService<T, Options extends HttpSearchOptions, IdKey = 'id'> {
-	protected apiUrl = '';
+	protected _apiUrl = '';
 	idKey = 'id';
 	public data$: BehaviorSubject<T[]> = new BehaviorSubject<T[]>( [] );
 
 	constructor ( public http: HttpClient ) {
-		// this.fetch();
+	}
+
+	public get apiUrl (): string {
+		return environment.apiBaseUrl + this._apiUrl;
+	}
+	public set apiUrl ( value: string ) {
+		this._apiUrl = value;
 	}
 
 	protected fetch = ( configs?: Options ): Observable<T[]> => {
@@ -23,7 +30,6 @@ export abstract class BaseCrudService<T, Options extends HttpSearchOptions, IdKe
 			{ params: { ...configs } as any } ).
 			pipe(
 				map( data => ( data || [] ) ),
-				// tap( data => this.data$.next( data ) ),
 				tap( e => this.sync( e ) ),
 				catchError( errorCatcher )
 			);
@@ -50,6 +56,8 @@ export abstract class BaseCrudService<T, Options extends HttpSearchOptions, IdKe
 	}
 
 	public post = ( payload: T ): Observable<T> => {
+		console.log( 'this.apiUrl: ', this.apiUrl );
+
 		if ( !payload ) throw new Error( 'The payload of http post is not provided' );
 		return this.http.post<T>( this.apiUrl, payload ).pipe(
 			tap( _ => console.log( 'sign-up saved - 0' ) ),

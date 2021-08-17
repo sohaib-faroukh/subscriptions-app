@@ -31,7 +31,7 @@ export class AccountRepo {
 			lastLoginAt: '',
 		} );
 
-		return await newAccount.save();
+		return await newAccount.save().catch( e => { throw e; } );
 
 	}
 
