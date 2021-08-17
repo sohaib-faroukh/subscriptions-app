@@ -2,6 +2,7 @@
 
 /credentials.ts
 /env.sh
+/env.dev.sh
 .firebase/*
 # compiled output
 /dist

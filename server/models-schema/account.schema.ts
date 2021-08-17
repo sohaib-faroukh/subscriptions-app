@@ -10,10 +10,10 @@ export interface IAccountDocument extends Document, Omit<IAccount, 'id'> { }
 const AccountSchema = new Schema<IAccountDocument>( {
 
 	id: { type: String, required: true, unique: true, default: uuid(), immutable: true },
-	firstName: { type: String, required: true },
-	lastName: { type: String, required: false },
-	username: { type: String, required: false, unique: true },
-	email: { type: String, required: true, unique: true },
+	firstName: { type: String, required: true, trim: true, lowercase: true },
+	lastName: { type: String, required: false, trim: true, lowercase: true },
+	email: { type: String, required: true, unique: true, trim: true, lowercase: true },
+	username: { type: String, required: false },
 	password: { type: String, required: true },
 	token: { type: String, required: false },
 	type: { type: String, required: true, enum: [ 'corporate', 'personal' ] },
