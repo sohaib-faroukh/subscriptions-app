@@ -1,7 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 /credentials.ts
-/env.sh
+/env*.sh
 .firebase/*
 # compiled output
 /dist
