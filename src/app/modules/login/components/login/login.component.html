@@ -1,45 +1,36 @@
-<div class="container-fluid h-100 p-0 m-0">
-	<div class="row h-100">
-		<div class="col-12 col-md-6 m-auto">
-			<div class="card bg-light bg-white card shadow mx-2 mx-md-0">
-				<form [formGroup]="form!" (ngSubmit)="onSubmit()">
-					<div class="card-body container p-4">
-						<h4 class="card-title text-primary-1">{{'Login' | uppercase}}</h4>
-						<p class="card-text text-primary">Login to your account</p>
+<form [formGroup]="form!" (ngSubmit)="onSubmit()">
+	<div class="container-fluid bg-gray-200 d-flex m-0 p-0" style="min-height: 100vh;height: auto;">
 
-						<div class="row">
-							<app-input-field [placeholder]="'Email'" [isWithLabel]="false" [type]="'email'"
-								[formControlName]="'email'">
-							</app-input-field>
-						</div>
-						<div class="row">
-							<app-input-field [placeholder]="'Password'" [isWithLabel]="false" [type]="'password'"
-								[formControlName]="'password'"></app-input-field>
-						</div>
-						<div class="row px-3">
-							<div class="col-6">
+		<div class="row card border m-auto p-3 row shadow-lg bg-primary-light col-12 col-md-6">
 
-								<div class="form-check mb-3">
-									<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-									<label class="form-check-label text-primary-1" for="flexCheckChecked">Keep my signed in
-									</label>
-								</div>
-							</div>
-							<div class="col-6">
-								<a class="btn p-0 text-black-50 pull-right">Forget password ?</a>
-							</div>
-						</div>
-						<div class="row px-3">
-							<a href="#" class="mb-3 btn btn-secondary">Sign in</a>
-						</div>
-						<div class="row">
-							<span class="text-primary-1 text-center">
-								Not a member ?&nbsp;&nbsp;<a [routerLink]="['/sign-up']" class="btn p-0 pb-1 text-primary-1">Sign up</a>
-							</span>
-						</div>
-					</div>
-				</form>
+
+			<div class="card-body">
+				<div class="row">
+					<h4 class="card-title text-primary-1">{{'Login' | uppercase}}</h4>
+				</div>
+				<div class="row">
+					<p class="text-primary">Login to your account...</p>
+				</div>
+
+				<div class="row">
+					<app-input-field class="w-100" [placeholder]="'Email'" [isWithLabel]="false" [type]="'email'"
+						[formControlName]="'email'">
+					</app-input-field>
+				</div>
+				<div class="row">
+					<app-input-field class="w-100" [placeholder]="'Password'" [isWithLabel]="false" [type]="'password'"
+						[formControlName]="'password'"></app-input-field>
+				</div>
+
+				<div class="row pb-2 justify-content-center">
+					<button [disabled]="!form?.valid" class="mb-1 btn btn-secondary" type="submit">Login</button>
+				</div>
+				<div class="row pb-2 justify-content-center">
+					<a [routerLink]="['/'+routerMap.signUp]" class="pointer text-sm">Create new account ?</a>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+
+
+</form>

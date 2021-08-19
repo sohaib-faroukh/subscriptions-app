@@ -1,6 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
-@import "custom.scss";
-@import "~bootstrap/scss/bootstrap";
+// /* You can add global styles to this file, and also import other style files */
+// @import "custom.scss";
+// @import "~bootstrap/scss/bootstrap";
 html,
 body {
 	width: 100%;
@@ -9,4 +9,8 @@ body {
 	padding: 0;
 	overflow-y: auto;
 	overflow-x: hidden;
+}
+.input-group > .input-group-prepend > .input-group-text {
+	background-color: transparent;
+	border: 0;
 }
