@@ -1,68 +1,73 @@
-<div class="container-fluid p-0 m-0 h-100">
-	<!-- style="height: 8vh !important;" -->
-	<div class="row h-100">
-		<div class="col-12 col-md-6 m-auto">
-			<div class="bg-white border-0 card px-2 py-0 shadow mx-2 mx-md-0">
-				<form [formGroup]="form!" (ngSubmit)="onSubmit()">
+<form [formGroup]="form!" (ngSubmit)="onSubmit()">
+	<div class="container-fluid bg-gray-200 d-flex m-0 p-0" style="min-height: 100vh;height: auto;">
 
-					<div class="card-body container">
-						<h4 class="card-title text-primary-1">{{'Sign up' | uppercase}}</h4>
-						<p class="card-text text-primary">Create a new account...</p>
-
-						<div class="row pb-2 mb-3">
-							<div class="input-group align-items-center">
-								<span>Account Type: </span>
-								<div class="form-check">
-									<select class="form-select" placeholder="Corporate Account" [formControlName]="'type'"
-										name="type-select-name">
-										<option [ngValue]="'personal'">Personal</option>
-										<option [ngValue]="'corporate'">Corporate</option>
-									</select>
-								</div>
-							</div>
-						</div>
+		<div class="row card border m-auto p-3 row shadow-lg bg-primary-light col-12 col-md-6">
 
 
-						<div class="row">
-							<app-input-field [placeholder]="'First Name'" [isWithLabel]="false" [formControlName]="'firstName'">
-							</app-input-field>
+			<div class="card-body">
+				<div class="row">
+					<h4 class="card-title text-primary-1">{{'Sign up' | uppercase}}</h4>
+				</div>
+				<div class="row">
+					<p class="text-primary">Create a new account...</p>
+				</div>
+				<div class="row pb-2 mb-3">
+					<div class="input-group align-items-center">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="account-type-select-id">Account Type: </label>
 						</div>
-						<div class="row">
-							<app-input-field [placeholder]="'Last Name'" [isWithLabel]="false" [formControlName]="'lastName'">
-							</app-input-field>
-						</div>
-						<div class="row">
-							<app-input-field [placeholder]="'Email'" [isWithLabel]="false" [type]="'email'"
-								[formControlName]="'email'">
-							</app-input-field>
-						</div>
-						<div class="row">
-							<app-input-field [placeholder]="'Password'" [isWithLabel]="false" [type]="'password'"
-								[formControlName]="'password'"></app-input-field>
-						</div>
-						<div class="row">
-							<app-input-field [placeholder]="'Password'" [isWithLabel]="false" [type]="'password'"
-								[formControl]="passwordFormControl!"
-								[errors]="passwordFormControl?.value !== formControl('password')?.value ? {notMatchedPassword:true}:null">
-							</app-input-field>
-						</div>
-						<div class="row px-3 pb-2">
-							<div class="form-check mb-1">
-								<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-								<label class="form-check-label text-primary-1" for="flexCheckChecked">
-									I agree to the Terms of Services and Privacy Policy
-								</label>
-							</div>
-						</div>
-						<div class="row px-3 pb-2">
-							<button [disabled]="!form?.valid" class="mb-1 btn btn-secondary" type="submit">Sign up</button>
-						</div>
-						<div class="row pb-2">
-							<a class="pointer link-primary text-primary-1 text-center">Are you already a member ?</a>
-						</div>
+						<select id="account-type-select-id" class="col-3 custom-select" placeholder="Corporate Account"
+							[formControlName]="'type'" name="type-select-name">
+							<option [ngValue]="'personal'">Personal</option>
+							<option [ngValue]="'corporate'">Corporate</option>
+						</select>
+
 					</div>
-				</form>
+				</div>
+
+
+				<div class="row">
+					<app-input-field class="w-100" [placeholder]="'First Name'" [isWithLabel]="false"
+						[formControlName]="'firstName'">
+					</app-input-field>
+				</div>
+				<div class="row">
+					<app-input-field class="w-100" [placeholder]="'Last Name'" [isWithLabel]="false"
+						[formControlName]="'lastName'">
+					</app-input-field>
+				</div>
+				<div class="row">
+					<app-input-field class="w-100" [placeholder]="'Email'" [isWithLabel]="false" [type]="'email'"
+						[formControlName]="'email'">
+					</app-input-field>
+				</div>
+				<div class="row">
+					<app-input-field class="w-100" [placeholder]="'Password'" [isWithLabel]="false" [type]="'password'"
+						[formControlName]="'password'"></app-input-field>
+				</div>
+				<div class="row">
+					<app-input-field class="w-100" [placeholder]="'Password'" [isWithLabel]="false" [type]="'password'"
+						[formControl]="passwordFormControl!"
+						[errors]="passwordFormControl?.value !== formControl('password')?.value ? {notMatchedPassword:true}:null">
+					</app-input-field>
+				</div>
+				<div class="row pb-2 justify-content-center">
+					<div class="form-check mb-1">
+						<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+						<label class="form-check-label text-primary" for="flexCheckChecked">
+							I agree to the Terms of Services and Privacy Policy
+						</label>
+					</div>
+				</div>
+				<div class="row pb-2 justify-content-center">
+					<button [disabled]="!form?.valid" class="mb-1 btn btn-secondary" type="submit">Sign up</button>
+				</div>
+				<div class="row pb-2 justify-content-center">
+					<a class="pointer text-sm">Are you already a member ?</a>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+
+
+</form>
