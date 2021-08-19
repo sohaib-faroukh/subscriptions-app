@@ -1,7 +1,8 @@
+<!-- TODO: Move the header and the Navbar to their own modules & components  -->
 <!-- NAVBAR-->
 <header class="header fixed-top header-animated">
-	<nav class="navbar navbar-expand-lg navbar-light py-3">
-		<div class="container"><a class="navbar-brand" href="index.html">
+	<nav class="fixed-top navbar navbar-expand-lg navbar-light py-3">
+		<div class="container-fluid"><a class="navbar-brand" href="index.html">
 				<img src="assets/theme/img/logo.svg" alt="..." width="80"></a>
 			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
 				data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -26,9 +27,16 @@
 					<li class="nav-item mr-2">
 						<a class="nav-link" href="">Contact us</a>
 					</li>
+					<li class="nav-item mr-2">
+						<!--  data-target="#quoteForm" data-toggle="modal" -->
+						<a class="btn btn-primary" type="button" [routerLink]="['/'+routerMap.login]">
+							Login
+						</a>
+					</li>
 					<li class="nav-item">
-						<button class="btn btn-primary" type="button" data-target="#quoteForm" data-toggle="modal">
-							Get a quote</button>
+						<a class="btn btn-primary" type="button" [routerLink]="['/'+routerMap.signUp]">
+							Sign up
+						</a>
 					</li>
 				</ul>
 			</div>
@@ -37,6 +45,7 @@
 </header>
 
 
+<!-- TODO: implement a service (maybe material angular) for a reusable modal -->
 <!-- GET a QUOTE MODAL -->
 
 <div class="modal fade" id="quoteForm" tabindex="-1" role="dialog" aria-labelledby="quoteForm" aria-hidden="true">

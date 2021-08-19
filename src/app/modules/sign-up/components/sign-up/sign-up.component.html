@@ -63,7 +63,7 @@
 					<button [disabled]="!form?.valid" class="mb-1 btn btn-secondary" type="submit">Sign up</button>
 				</div>
 				<div class="row pb-2 justify-content-center">
-					<a class="pointer text-sm">Are you already a member ?</a>
+					<a [routerLink]="['/'+routerMap.login]" class="pointer text-sm">Are you already a member ?</a>
 				</div>
 			</div>
 		</div>
