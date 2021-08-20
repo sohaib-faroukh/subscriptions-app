@@ -1,10 +1,11 @@
 import * as express from 'express';
-import { Router } from 'express';
-import { getAccounts, postAccount } from './server/routes/account.routes';
+import { NextFunction, Router } from 'express';
+import { getAccounts, isAccountAuth, postAccount, postLoginAccount } from './server/routes/account.routes';
 import { getEnvironment } from './server/environments/env.util';
 import { cors } from './utils/cors.util';
 import { db } from './server/configurations/db';
 import * as logger from 'morgan';
+import { requestResponder } from './utils/request-responder.util';
 
 // import { createConnection } from 'typeorm';
 
@@ -20,7 +21,10 @@ const apiRoutes: Router = Router();
 // Accounts routes
 apiRoutes.route( '/api/auth/new' ).post( postAccount );
 
+apiRoutes.route( '/api/accounts/is-auth' ).get( isAccountAuth );
+apiRoutes.route( '/api/accounts/login' ).post( postLoginAccount );
 apiRoutes.route( '/api/accounts' ).get( getAccounts ).post( postAccount );
+
 
 apiRoutes.route( '/*' ).get( ( req, res ) =>
 	res.sendFile( ANGULAR_DIST_FILES.rootFile, { root: ANGULAR_DIST_FILES.path } )
@@ -31,13 +35,17 @@ apiRoutes.route( '/*' ).get( ( req, res ) =>
 // Bootstrapping the application
 const expressApp = express();
 
-expressApp.use( cors );
+expressApp.use( express.static( ANGULAR_DIST_FILES.path ) );
 expressApp.use( express.json() );
 expressApp.use( express.urlencoded( { limit: '200mb', extended: true } ) );
-expressApp.use( express.static( ANGULAR_DIST_FILES.path ) );
+expressApp.use( cors );
 expressApp.use( logger( 'short' ) );
 // expressApp.use( errorHandler);
 expressApp.use( apiRoutes );
+
+expressApp.use( '', requestResponder( ( req: Request, res: Response, next: NextFunction ) => {
+	throw new Error( 'Route is not implemented' );
+} ) );
 
 const bootstrapTheApp = async () => {
 	expressApp.listen( PORT, async () => {

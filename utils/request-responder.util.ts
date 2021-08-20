@@ -15,7 +15,8 @@ export const requestResponder = ( fn: any ) => {
 		} catch ( error ) {
 			res.status( StatusCodes.INTERNAL_SERVER_ERROR ).json( {
 				code: StatusCodes.INTERNAL_SERVER_ERROR,
-				message: error?.message || 'Failure',
+				error: error?.message || 'Failure',
+				message: '',
 				data: null,
 			} );
 			console.error( '**** ERROR: ', error );

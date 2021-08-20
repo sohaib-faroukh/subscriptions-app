@@ -24,17 +24,6 @@ export abstract class BaseCrudService<T, Options extends HttpSearchOptions, IdKe
 		this._apiUrl = value;
 	}
 
-	protected fetch = ( configs?: Options ): Observable<T[]> => {
-		return this.http.get<T[]>(
-			this.apiUrl,
-			{ params: { ...configs } as any } ).
-			pipe(
-				map( data => ( data || [] ) ),
-				tap( e => this.sync( e ) ),
-				catchError( errorCatcher )
-			);
-	}
-
 	protected sync = ( data: T[], isRemove: boolean = false ) => {
 		console.log( '**** syncing...' );
 		const currentData = this.data$.getValue() || [];
@@ -50,6 +39,23 @@ export abstract class BaseCrudService<T, Options extends HttpSearchOptions, IdKe
 		}
 	}
 
+	protected pipes = <Some extends T | T[]> ( input: Observable<Some>, withDataSync = true, isRemove = false ): Observable<Some> => {
+		return input.pipe(
+			tap( _ => console.log( 'start pipe' ) ),
+			tap( e => withDataSync ? ( Array.isArray( e ) ? this.sync( e as T[], isRemove ) : this.sync( [ e as T ], isRemove ) ) : true ),
+			catchError( errorCatcher )
+		);
+	}
+
+	protected fetch = ( configs?: Options ): Observable<T[]> => {
+		return this.pipes(
+			this.http.get<T[]>( this.apiUrl, { params: { ...configs } as any } ).
+				pipe( map( data => ( data || [] ) ) ),
+			true,
+			false );
+	}
+
+
 	public get = ( options?: Options ): Observable<T[]> => {
 		if ( !options && this.data$.getValue()?.length > 0 ) return this.data$;
 		else return this.fetch( options );
@@ -59,28 +65,18 @@ export abstract class BaseCrudService<T, Options extends HttpSearchOptions, IdKe
 		console.log( 'this.apiUrl: ', this.apiUrl );
 
 		if ( !payload ) throw new Error( 'The payload of http post is not provided' );
-		return this.http.post<T>( this.apiUrl, payload ).pipe(
-			tap( _ => console.log( 'sign-up saved - 0' ) ),
-			tap( e => this.sync( [ e ] ) ),
-			catchError( errorCatcher )
-		);
+		return this.pipes( this.http.post<T>( this.apiUrl, payload ), true, false );
 	}
 
 	public put = ( id: string | number, payload: T ): Observable<T> => {
 		if ( !payload ) throw new Error( 'The payload of http post is not provided' );
 		if ( !id ) throw new Error( 'The id of http request is not provided' );
-		return this.http.put<T>( `${ this.apiUrl }/${ id }`, payload ).pipe(
-			tap( e => this.sync( [ e ] ) ),
-			catchError( errorCatcher )
-		);
+		return this.pipes( this.http.put<T>( `${ this.apiUrl }/${ id }`, payload ), true, false );
 	}
 
 	public delete = ( id: string | number ): Observable<T> => {
 		if ( !id ) throw new Error( 'The id of http request is not provided' );
-		return this.http.delete<T>( `${ this.apiUrl }/${ id }` ).pipe(
-			tap( e => this.sync( [ e ], true ) ),
-			catchError( errorCatcher )
-		);
+		return this.pipes( this.http.delete<T>( `${ this.apiUrl }/${ id }` ), true, true );
 	}
 
 

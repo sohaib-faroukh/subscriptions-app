@@ -27,17 +27,26 @@
 					<li class="nav-item mr-2">
 						<a class="nav-link" href="">Contact us</a>
 					</li>
-					<li class="nav-item mr-2">
-						<!--  data-target="#quoteForm" data-toggle="modal" -->
-						<a class="btn btn-primary" type="button" [routerLink]="['/'+routerMap.login]">
-							Login
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="btn btn-primary" type="button" [routerLink]="['/'+routerMap.signUp]">
-							Sign up
-						</a>
-					</li>
+					<ng-container *ngIf="!(auth.isLoggedIn$| async);else logoutBtnRef">
+						<li class="nav-item mr-2">
+							<!--  data-target="#quoteForm" data-toggle="modal" -->
+							<a class="btn btn-primary" type="button" [routerLink]="['/'+routerMap.login]">
+								Login
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="btn btn-primary" type="button" [routerLink]="['/'+routerMap.signUp]">
+								Sign up
+							</a>
+						</li>
+					</ng-container>
+					<ng-template #logoutBtnRef>
+						<li class="nav-item mr-2">
+							<button class="btn btn-primary" type="button" (click)="onLogout()">
+								Logout
+							</button>
+						</li>
+					</ng-template>
 				</ul>
 			</div>
 		</div>
