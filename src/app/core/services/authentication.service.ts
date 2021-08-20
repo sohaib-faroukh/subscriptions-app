@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAccount } from 'models/account';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { BaseCrudService } from '../models/base-crud-service';
 import { HttpSearchOptions } from '../models/http-search-options';
-import { getItemFromStorage, saveToStorage } from '../utils/local-storage.util';
+import { deleteFromStorage, getItemFromStorage, saveToStorage } from '../utils/local-storage.util';
 
 @Injectable()
 export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchOptions> {
@@ -34,28 +34,39 @@ export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchO
 	 * *  `true` in case success request with success code `200`
 	 * *  `false` in case failed request
 	 */
-	public checkIfLoggedIn = async (): Promise<boolean> => {
+	public isAuth = async (): Promise<boolean> => {
 		let result = false;
 		try {
-			const token = getItemFromStorage( this.tokenStorageKey );
-			if ( token ) {
-				result = ( await this.http.get<boolean>( `${ this.apiUrl }/is-auth` ).toPromise() ) || false;
+			const myToken = getItemFromStorage( this.tokenStorageKey );
+			if ( myToken ) {
+				result = ( await this.http.get<boolean>( `${ this.apiUrl }/is-auth`, { params: { token: myToken } } )
+					.pipe(
+						map( ( res: any ) => res.data )
+					)
+					.toPromise() ) || false;
 			}
+			if ( !result ) throw new Error( 'No auth result' );
+			// else result = true;
+
 		} catch ( error ) {
+
 			result = false;
 			console.error( '**** Not logged-in' );
 			console.error( error );
+
 		} finally {
 			this._isLoggedIn$.next( result );
 		}
 		return result;
 	}
 	public login = ( account: IAccount ): Observable<any> => {
+		deleteFromStorage( this.tokenStorageKey );
 		// TODO: implement this method
 		return of( '' );
 	}
 
 	public signUp = ( user: IAccount ): Observable<IAccount> => {
+		deleteFromStorage( this.tokenStorageKey );
 		return this.post( user ).pipe(
 			tap( _ => console.log( 'sign-up saved - 1' ) ),
 			tap( newAccount => this.saveToStorage( ( newAccount as any ).data ) )

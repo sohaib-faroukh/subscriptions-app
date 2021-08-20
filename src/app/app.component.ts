@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
 
 	async ngOnInit (): Promise<void> {
 		this.loading = ComponentStatus.starting;
-		await this.auth.checkIfLoggedIn();
+		await this.auth.isAuth();
 		this.loading = ComponentStatus.done;
 	}
 }

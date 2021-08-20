@@ -5,6 +5,13 @@ import { uuid } from '../../utils/uuid';
 export class AccountRepo {
 	static model = AccountModel;
 
+	static find = async ( filters?: any ) => {
+		return ( await AccountRepo.model.find( filters ) );
+	}
+
+	static findOne = async ( filters?: any ) => {
+		return ( await AccountRepo.model.findOne( filters ) );
+	}
 	static findAll = async ( filters?: any ) => {
 		return ( await AccountRepo.model.find( filters ) );
 	}

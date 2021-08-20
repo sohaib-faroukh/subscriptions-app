@@ -4,7 +4,7 @@ import { AccountRepo } from '../repositories/account.repo';
 import { getCurrent } from '../../utils/date';
 import { uuid } from '../../utils/uuid';
 import { QueryParam } from '../../utils/query-param';
-import { body } from 'express-validator';
+import { body, query } from 'express-validator';
 import { requestValidator } from '../../utils/request-validator.util';
 import { requestResponder } from '../../utils/request-responder.util';
 import { generateAuthToken, verifyAuthToken } from '../../utils/jwt.util';
@@ -21,7 +21,7 @@ export const getAccounts: RequestHandler[] = [
 	requestResponder( async ( req: Request, res: Response, next: NextFunction ) => {
 
 		const defaultQueryParam = QueryParam.getDefault();
-		const query: Required<QueryParam> = {
+		const myQuery: Required<QueryParam> = {
 			...QueryParam.getDefault(),
 			take: req?.query?.take ? Number( req?.query?.take ) : defaultQueryParam?.take,
 			start: req?.query?.start ? Number( req?.query?.start ) : defaultQueryParam?.start,
@@ -35,6 +35,24 @@ export const getAccounts: RequestHandler[] = [
 	} ),
 
 ];
+
+export const isAccountAuth: RequestHandler[] = [
+	query( 'token' ).exists().bail().isString(),
+	requestResponder( async ( req: Request, res: Response, next: NextFunction ) => {
+
+		const token = req?.query?.token as string || '';
+		if ( !token ) throw new Error( 'Token is not provided' );
+		const account = verifyAuthToken( token ) as IAccountDocument;
+		if ( !account || !account?.email ) throw new Error( 'The token account is not found' );
+		const result = ( await AccountRepo.findOne( { email: account?.email } ) );
+		if ( !result ) throw new Error( 'The token account is not found' );
+
+		return true;
+
+	} ),
+
+];
+
 export const postAccount: RequestHandler[] = [
 	body( 'email' ).exists().isEmail(),
 	body( 'firstName' ).exists().isString(),
