@@ -32,9 +32,9 @@ apiRoutes.route( '/*' ).get( ( req, res ) =>
 const expressApp = express();
 
 expressApp.use( cors );
-expressApp.use( express.static( ANGULAR_DIST_FILES.path ) );
-expressApp.use( express.urlencoded( { limit: '200mb', extended: true } ) );
 expressApp.use( express.json() );
+expressApp.use( express.urlencoded( { limit: '200mb', extended: true } ) );
+expressApp.use( express.static( ANGULAR_DIST_FILES.path ) );
 expressApp.use( logger( 'short' ) );
 // expressApp.use( errorHandler);
 expressApp.use( apiRoutes );

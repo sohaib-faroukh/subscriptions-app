@@ -1,4 +1,4 @@
-<div class="mb-1">
+<div class="mb-2">
 
 
 	<div class="input-group">
@@ -10,7 +10,7 @@
 				'is-valid': (control?.dirty || control?.touched)  && !fieldErrors
 			}">
 		<ng-container *ngIf="isPassword">
-			<a (click)="togglePassword()" style="cursor: pointer;">
+			<a (click)="togglePassword()" class="input-post-icon">
 				<i class="fa fa-eye-slash m-3 fa-lg" *ngIf="type==='password';else hidePasswordIconRef"> </i>
 				<ng-template #hidePasswordIconRef> <i class="fa fa-eye m-3 fa-lg"> </i></ng-template>
 			</a>
@@ -21,7 +21,7 @@
 
 		<div class="row">
 			<span [ngClass]="(control?.dirty || control?.touched)  && fieldErrors ? 'show':'hide' "
-				class="mx-2 mt-1 text-danger">
+				class="mx-3 show text-danger text-sm">
 				&nbsp;{{getErrorMessage()}}
 			</span>
 		</div>

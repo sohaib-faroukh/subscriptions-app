@@ -10,7 +10,7 @@ import { saveToStorage } from '../utils/local-storage.util';
 @Injectable()
 export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchOptions> {
 
-	apiUrl = 'api/accounts';
+	// apiUrl = 'api/accounts';
 	tokenStorageKey = 'app_jwt_token';
 	auth$ = new BehaviorSubject<string>( '' );
 
@@ -19,6 +19,7 @@ export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchO
 
 	constructor ( public http: HttpClient ) {
 		super( http );
+		this.apiUrl = 'api/accounts';
 		this.counterOfUsage++;
 	}
 	public log = () => {

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { IAccount } from 'models/account';
 import { PasswordRegexMap } from 'src/app/core/configurations/password-regexps';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
+import { ROUTES_MAP } from 'src/app/routes.map';
 
 @Component( {
 	selector: 'app-sign-up',
@@ -23,7 +24,9 @@ export class SignUpComponent implements OnInit {
 	ngOnInit (): void {
 		this.form = this.buildFrom();
 	}
-
+	get routerMap (): any {
+		return { ...ROUTES_MAP };
+	}
 	get formValue (): IAccount {
 		return this.form?.value as IAccount;
 	}

@@ -1,9 +1,114 @@
-<div class="container-fluid">
-	<div class="row bg-light">
-		<div class="card card-body">
+<!-- TODO: Move the header and the Navbar to their own modules & components  -->
+<!-- NAVBAR-->
+<header class="header fixed-top header-animated">
+	<nav class="fixed-top navbar navbar-expand-lg navbar-light py-3">
+		<div class="container-fluid"><a class="navbar-brand" href="index.html">
+				<img src="assets/theme/img/logo.svg" alt="..." width="80"></a>
+			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link active" href="">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="">About us</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" href="#" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">Pages</a>
+						<div class="dropdown-menu mt-3" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" href="">Homepage</a>
+							<a class="dropdown-item" href="">About us</a>
+							<a class="dropdown-item" href="">Contact us</a>
+						</div>
+					</li>
+					<li class="nav-item mr-2">
+						<a class="nav-link" href="">Contact us</a>
+					</li>
+					<li class="nav-item mr-2">
+						<!--  data-target="#quoteForm" data-toggle="modal" -->
+						<a class="btn btn-primary" type="button" [routerLink]="['/'+routerMap.login]">
+							Login
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-primary" type="button" [routerLink]="['/'+routerMap.signUp]">
+							Sign up
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>
 
-			<h1 class="text-dark text-center fs-3">Home component area</h1>
 
+<!-- TODO: implement a service (maybe material angular) for a reusable modal -->
+<!-- GET a QUOTE MODAL -->
+
+<div class="modal fade" id="quoteForm" tabindex="-1" role="dialog" aria-labelledby="quoteForm" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+		<div class="modal-content p-md-3">
+			<div class="modal-header">
+				<h4 class="modal-title">Request a <span class="text-primary">quote</span></h4>
+				<button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+						aria-hidden="true">×</span></button>
+			</div>
+			<div class="modal-body">
+				<form action="#">
+					<div class="row">
+						<div class="form-group col-lg-6">
+							<label class="font-weight-bold text-small" for="firstname">First name<span
+									class="text-primary ml-1">&#42;</span></label>
+							<input class="form-control" id="firstname" type="text" placeholder="Enter your first name" required>
+						</div>
+						<div class="form-group col-lg-6">
+							<label class="font-weight-bold text-small" for="lastname">Last name<span
+									class="text-primary ml-1">&#42;</span></label>
+							<input class="form-control" id="lastname" type="text" placeholder="Enter your last name" required>
+						</div>
+						<div class="form-group col-lg-12">
+							<label class="font-weight-bold text-small" for="email">Email address<span
+									class="text-primary ml-1">&#42;</span></label>
+							<input class="form-control" id="email" type="email" placeholder="Enter your email address" required>
+						</div>
+						<div class="form-group col-lg-6">
+							<label class="font-weight-bold text-small" for="phone">Phone number <small
+									class="small text-gray">optional</small></label>
+							<input class="form-control" id="phone" type="tel" placeholder="Enter your phone number">
+						</div>
+						<div class="form-group col-lg-6">
+							<label class="font-weight-bold text-small" for="projecttype">Project type<span
+									class="text-primary ml-1">&#42;</span></label>
+							<input class="form-control" id="projecttype" type="text" placeholder="Enter your project type" required>
+						</div>
+						<div class="form-group col-lg-6">
+							<label class="font-weight-bold text-small" for="budget">Estimated budget<span
+									class="text-primary ml-1">&#42;</span></label>
+							<input class="form-control" id="budget" type="text" placeholder="Enter your estimated budget"
+								required><small class="form-text text-muted">Project budget will be on <span
+									class="text-dark">$</span></small>
+						</div>
+						<div class="form-group col-lg-6">
+							<label class="font-weight-bold text-small" for="timeframe">Time frame<span
+									class="text-primary ml-1">&#42;</span></label>
+							<input class="form-control" id="timeframe" type="text" placeholder="Maximum time for the project"
+								required>
+						</div>
+						<div class="form-group col-lg-12">
+							<label class="font-weight-bold text-small" for="projectdetail">Project details<span
+									class="text-primary ml-1">&#42;</span></label>
+							<textarea class="form-control" id="projectdetail" rows="5"
+								placeholder="Provide a short brief about your project" required></textarea>
+						</div>
+						<div class="form-group col-lg-12">
+							<button class="btn btn-primary" type="submit">Submit your request</button>
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
 </div>
