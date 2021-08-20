@@ -1,8 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { IAccount } from 'models/account';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { ROUTES_MAP } from 'src/app/routes.map';
+import { environment } from 'src/environments/environment';
 import { BaseCrudService } from '../models/base-crud-service';
 import { HttpSearchOptions } from '../models/http-search-options';
 import { deleteFromStorage, getItemFromStorage, saveToStorage } from '../utils/local-storage.util';
@@ -11,22 +14,23 @@ import { deleteFromStorage, getItemFromStorage, saveToStorage } from '../utils/l
 export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchOptions> {
 
 	// apiUrl = 'api/accounts';
-	tokenStorageKey = 'app_jwt_token';
-	private _isLoggedIn$ = new BehaviorSubject<boolean>( false );
-	auth$ = new BehaviorSubject<string>( '' );
-
-
+	private tokenStorageKey = environment.JWT_STORAGE_KEY;
 	private counterOfUsage = 0;
 
-	constructor ( public http: HttpClient ) {
+	public auth$ = new BehaviorSubject<string>( '' );
+	public isLoggedIn$ = new BehaviorSubject<boolean>( false );
+
+
+	constructor ( public http: HttpClient, public router: Router ) {
 		super( http );
 		this.apiUrl = 'api/accounts';
 		this.counterOfUsage++;
 	}
 
-	get isLoggedIn$ (): Observable<boolean> {
-		return this._isLoggedIn$.asObservable();
+	get isLoggedIn (): boolean {
+		return this.isLoggedIn$.getValue() || false;
 	}
+
 
 	/**
 	 * 1. this check is happened once on each time on the opening of the application
@@ -39,14 +43,9 @@ export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchO
 		try {
 			const myToken = getItemFromStorage( this.tokenStorageKey );
 			if ( myToken ) {
-				result = ( await this.http.get<boolean>( `${ this.apiUrl }/is-auth`, { params: { token: myToken } } )
-					.pipe(
-						map( ( res: any ) => res.data )
-					)
-					.toPromise() ) || false;
+				result = ( await this.http.get<boolean>( `${ this.apiUrl }/is-auth` ).toPromise() ) || false;
 			}
 			if ( !result ) throw new Error( 'No auth result' );
-			// else result = true;
 
 		} catch ( error ) {
 
@@ -55,26 +54,47 @@ export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchO
 			console.error( error );
 
 		} finally {
-			this._isLoggedIn$.next( result );
+			this.isLoggedIn$.next( result );
 		}
 		return result;
 	}
-	public login = ( account: IAccount ): Observable<any> => {
+
+
+	public login = ( account: Partial<IAccount> ): Observable<any> => {
 		deleteFromStorage( this.tokenStorageKey );
-		// TODO: implement this method
-		return of( '' );
+		return this.http.post<IAccount>( `${ this.apiUrl }/login`, account )
+			.pipe(
+				tap( loggedInAccount => {
+					this.saveToStorage( loggedInAccount );
+					this.isLoggedIn$.next( true );
+					this.router.navigate( [ '/' + ROUTES_MAP.home ] );
+				} )
+			);
 	}
 
 	public signUp = ( user: IAccount ): Observable<IAccount> => {
-		deleteFromStorage( this.tokenStorageKey );
+		this.deleteFromStorage();
 		return this.post( user ).pipe(
 			tap( _ => console.log( 'sign-up saved - 1' ) ),
-			tap( newAccount => this.saveToStorage( ( newAccount as any ).data ) )
+			tap( _ => this.isLoggedIn$.next( true ) ),
+			tap( newAccount => this.saveToStorage( ( newAccount as any ) ) ),
 		);
 	}
+
+	public logout = (): void => {
+		this.deleteFromStorage();
+		this.isLoggedIn$.next( false );
+		this.router.navigate( [ '/' + ROUTES_MAP.login ] );
+	}
+
 
 	private saveToStorage = ( value: IAccount ) => {
 		saveToStorage( this.tokenStorageKey, value?.token || '' );
 		this.auth$.next( value?.token || '' );
+	}
+
+	private deleteFromStorage = () => {
+		deleteFromStorage( this.tokenStorageKey );
+		this.auth$.next( '' );
 	}
 }

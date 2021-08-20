@@ -2,6 +2,9 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AuthenticationService } from './services/authentication.service';
+import { RouterModule } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
+import { HttpInterceptorProviders } from './interceptors';
 
 
 
@@ -9,10 +12,13 @@ import { AuthenticationService } from './services/authentication.service';
 	declarations: [],
 	imports: [
 		CommonModule,
+		RouterModule,
 		HttpClientModule,
 	],
 	providers: [
 		AuthenticationService,
+		HttpInterceptorProviders,
+		AuthGuard,
 	],
 } )
 /**

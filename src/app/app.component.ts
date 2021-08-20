@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ComponentStatus } from './core/models/component-status';
 import { AuthenticationService } from './core/services/authentication.service';
-enum ComponentStatus {
-	initial = 0,
-	starting = 1,
-	loading = 2,
-	done = 3,
-}
+
 @Component( {
 	selector: 'app-root',
 	templateUrl: './app.component.html',
@@ -18,7 +14,7 @@ export class AppComponent implements OnInit {
 
 	async ngOnInit (): Promise<void> {
 		this.loading = ComponentStatus.starting;
-		await this.auth.isAuth();
-		this.loading = ComponentStatus.done;
+		// await this.auth.isAuth();
+		setTimeout( () => this.loading = ComponentStatus.done, 2000 );
 	}
 }

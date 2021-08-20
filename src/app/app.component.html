@@ -1,9 +1,17 @@
-<!--   -->
-<div class="container-fluid p-0 m-0" style="width: 100vw;min-height: 100vh;"
-	*ngIf="(auth.isLoggedIn$|async )=== true;else pleaseLoginRef">
-	<router-outlet></router-outlet>
-</div>
+<!-- <ng-container *ngIf="loading===3;else loadingRef">
 
+	<div class="container-fluid p-0 m-0" style="width: 100vw;min-height: 100vh;">
+		<router-outlet></router-outlet>
+	</div>
+
+</ng-container>
 <ng-template #pleaseLoginRef>
-	<a></a>
+	<a>
+		please login
+	</a>
 </ng-template>
+<ng-template #loadingRef>
+	<a>Loading dude...</a>
+</ng-template> -->
+
+<router-outlet></router-outlet>

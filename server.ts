@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { NextFunction, Router } from 'express';
-import { getAccounts, isAccountAuth, postAccount } from './server/routes/account.routes';
+import { getAccounts, isAccountAuth, postAccount, postLoginAccount } from './server/routes/account.routes';
 import { getEnvironment } from './server/environments/env.util';
 import { cors } from './utils/cors.util';
 import { db } from './server/configurations/db';
@@ -21,8 +21,10 @@ const apiRoutes: Router = Router();
 // Accounts routes
 apiRoutes.route( '/api/auth/new' ).post( postAccount );
 
-apiRoutes.route( '/api/accounts' ).get( getAccounts ).post( postAccount );
 apiRoutes.route( '/api/accounts/is-auth' ).get( isAccountAuth );
+apiRoutes.route( '/api/accounts/login' ).post( postLoginAccount );
+apiRoutes.route( '/api/accounts' ).get( getAccounts ).post( postAccount );
+
 
 apiRoutes.route( '/*' ).get( ( req, res ) =>
 	res.sendFile( ANGULAR_DIST_FILES.rootFile, { root: ANGULAR_DIST_FILES.path } )

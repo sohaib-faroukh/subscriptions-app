@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './core/guards/auth.guard';
 import { ROUTES_MAP } from './routes.map';
 
 const routes: Routes = [
 	{ path: ROUTES_MAP.empty, redirectTo: ROUTES_MAP.home, pathMatch: 'full' },
 	{
-		path: ROUTES_MAP.home, loadChildren: () => import( './layouts/client-layout/client-layout.module' ).then( m => m.ClientLayoutModule ),
+		path: ROUTES_MAP.home, canLoad: [ AuthGuard ], loadChildren: () => import( './layouts/client-layout/client-layout.module' ).then( m => m.ClientLayoutModule ),
 	},
 	{
 		path: ROUTES_MAP.docs, loadChildren: () => import( './documentation/documentation.module' ).then( m => m.DocumentationModule ),

@@ -1,4 +1,5 @@
 export const ROUTES_MAP = {
+	root: '/',
 	empty: '',
 	error: '**',
 	docs: 'docs',
