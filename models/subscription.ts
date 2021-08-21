@@ -1,9 +1,12 @@
 
-import { IdentityWithLogInfo } from './generics/IdentityWithLogInfo';
+import { CalenderEvent, ICalenderEvent } from './generics/calender-event';
 
-export class Subscription extends IdentityWithLogInfo {
-	description?: string;
+export interface ISubscription extends ICalenderEvent {
+	firstParty: string;
+	secondParty: string;
+}
+
+export class Subscription extends CalenderEvent {
 	firstParty: string = '';
 	secondParty: string = '';
-
 }

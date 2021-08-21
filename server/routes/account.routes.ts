@@ -116,8 +116,11 @@ export const postLoginAccount: RequestHandler[] = [
 
 ];
 
-const getLoggedInAccount = async ( token: string | undefined ): Promise<IAccount | null> => {
+export const getLoggedInAccount = async ( token: string | undefined ): Promise<IAccount | null> => {
 	if ( !token ) return null;
+
+	const tokenKey = 'Bearer ';
+	if ( token?.startsWith( tokenKey ) ) token = token?.substring( tokenKey?.length, token?.length );
 	const account = verifyAuthToken( token );
 	if ( account ) {
 		return await AccountRepo.findOne( { email: account.email } ) || null;

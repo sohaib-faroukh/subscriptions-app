@@ -25,5 +25,4 @@ const AccountSchema = new Schema<IAccountDocument>( {
 
 } as SchemaDefinition, { collection: 'accounts' } );
 
-// TODO: we may need to fix mongoose installation
 export const AccountModel = mongoose.model<IAccount>( 'Accounts', AccountSchema as any );

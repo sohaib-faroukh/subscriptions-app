@@ -1,8 +1,40 @@
+import { ISubscriptionDocument, SubscriptionModel } from '../models-schema/subscription.schema';
+import { getCurrent } from '../../utils/date';
+import { uuid } from '../../utils/uuid';
 
-// import { Subscription } from 'models/subscription';
-// import { getConnection, getRepository, Repository } from 'typeorm';
-// import { SubscriptionEntity } from '../entities/subscription.entity';
+export class SubscriptionRepo {
+	static model = SubscriptionModel;
 
-// // request data
-// export const subscriptionRepo: Repository<Subscription> = getConnection()?.getRepository<Subscription>( SubscriptionEntity ) || undefined;
+	static find = async ( filters?: any ) => {
+		return ( await SubscriptionRepo.model.find( filters ) );
+	}
 
+	static findOne = async ( filters?: any ) => {
+		return ( await SubscriptionRepo.model.findOne( filters ) );
+	}
+	static findAll = async ( filters?: any ) => {
+		return ( await SubscriptionRepo.model.find( filters ) );
+	}
+	static findById = async ( id: string ) => {
+		return ( await SubscriptionRepo.model.findById( id ) );
+	}
+
+	static insert = async ( data: ISubscriptionDocument ): Promise<ISubscriptionDocument> => {
+		const currentTime = getCurrent();
+		const newSubscription = new SubscriptionModel(
+			{
+				id: uuid(),
+				createdAt: data.createdAt || currentTime,
+				updatedAt: data.updatedAt || currentTime,
+				description: data.description || '',
+				firstParty: data.firstParty || '',
+				secondParty: data.secondParty || '',
+				createdBy: data.createdBy || '',
+				time: data.time || '',
+				repeat: data.repeat || 'monthly',
+			} as any as ISubscriptionDocument
+		);
+		return await newSubscription.save().catch( e => { throw e; } );
+	}
+
+}
