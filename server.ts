@@ -6,6 +6,7 @@ import { cors } from './utils/cors.util';
 import { db } from './server/configurations/db';
 import * as logger from 'morgan';
 import { requestResponder } from './utils/request-responder.util';
+import { getSubscriptions, postSubscription } from './server/routes/subscription.routes';
 
 // import { createConnection } from 'typeorm';
 
@@ -20,10 +21,12 @@ const apiRoutes: Router = Router();
 
 // Accounts routes
 apiRoutes.route( '/api/auth/new' ).post( postAccount );
-
 apiRoutes.route( '/api/accounts/is-auth' ).get( isAccountAuth );
 apiRoutes.route( '/api/accounts/login' ).post( postLoginAccount );
 apiRoutes.route( '/api/accounts' ).get( getAccounts ).post( postAccount );
+
+// Subscriptions routes
+apiRoutes.route( '/api/subscriptions' ).get( getSubscriptions ).post( postSubscription );
 
 
 apiRoutes.route( '/*' ).get( ( req, res ) =>
