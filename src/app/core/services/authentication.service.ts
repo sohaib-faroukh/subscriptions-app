@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { IAccount } from 'models/account';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { ROUTES_MAP } from 'src/app/routes.map';
 import { environment } from 'src/environments/environment';
 import { BaseCrudService } from '../models/base-crud-service';
@@ -25,6 +25,22 @@ export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchO
 		super( http );
 		this.apiUrl = 'api/accounts';
 		this.counterOfUsage++;
+
+		// TODO: handle routes can be moved to separate service
+		this.router.events
+			.pipe(
+				filter( e => e instanceof NavigationEnd ),
+				map( e => e as NavigationEnd ),
+				tap( e => {
+					console.log( `**** from auth service router pipe: `, e.url );
+				} ),
+				filter( e => [ ROUTES_MAP?.login, ROUTES_MAP.signUp ].map( r => `/${ r }` ).includes( e.url ) ),
+				tap( e => {
+					console.log( `**** from auth service PASSED: `, e.url );
+					// if ( this.isLoggedIn )
+					this.router.navigateByUrl( '/' );
+				} ),
+			).subscribe();
 	}
 
 	get isLoggedIn (): boolean {

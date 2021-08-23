@@ -12,6 +12,20 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 		this.authenticationService.isAuth();
 	}
 
+	handle = ( url?: string, methodName: string = 'canActivate' ) => {
+		const _isLoggedIn = this.authenticationService.isLoggedIn$.getValue();
+		if ( !_isLoggedIn ) this.navigateToLogin();
+		// else {
+		// 	if ( url ) {
+		// 		if ( [ ROUTES_MAP?.login, ROUTES_MAP.signUp ].includes( url ) ) {
+		// 			this.router.navigate( [ '/' ] );
+		// 		}
+		// 		else this.router.navigate( [ url ] );
+		// 	}
+		// }
+		console.log( `**** ${ methodName } ${ _isLoggedIn } ==> ${ url || '' }` );
+		return _isLoggedIn;
+	}
 
 	navigateToLogin = () => {
 		if ( !this.authenticationService.isLoggedIn$.getValue() ) this.router.navigate( [ '/' + ROUTES_MAP.login ] );
@@ -19,29 +33,21 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 	canActivate (
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot ): boolean {
-		const _isLoggedIn = this.authenticationService.isLoggedIn$.getValue();
-		if ( !_isLoggedIn ) this.navigateToLogin();
-		// else {
-		// 	this.router.navigate( [ state.url ] );
-		// }
-		console.log( `**** canActivate ${ _isLoggedIn } ==> ${ state?.url || '' }` );
-		return _isLoggedIn;
+		return this.handle( state?.url || '' );
 	}
+
+
 	canActivateChild (
 		childRoute: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot ): boolean {
-		const _isLoggedIn = this.authenticationService.isLoggedIn$.getValue();
-		if ( !_isLoggedIn ) this.navigateToLogin();
-		console.log( `**** canActivateChild ${ _isLoggedIn } ==> ${ state?.url || '' }` );
-		return _isLoggedIn;
+
+		return this.handle( state?.url || '', 'canActivateChild' );
+
 	}
+
 	canLoad (
 		route: Route,
 		segments: UrlSegment[] ): boolean {
-		const _isLoggedIn = this.authenticationService.isLoggedIn$.getValue();
-		if ( !_isLoggedIn ) this.navigateToLogin();
-
-		console.log( `**** canLoad ${ _isLoggedIn }  ==> ${ route?.path || '' }` );
-		return _isLoggedIn;
+		return this.handle( route?.path || '', 'canLoad' );
 	}
 }

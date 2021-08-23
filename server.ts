@@ -7,8 +7,8 @@ import { db } from './server/configurations/db';
 import * as logger from 'morgan';
 import { requestResponder } from './utils/request-responder.util';
 import { getSubscriptions, postSubscription } from './server/routes/subscription.routes';
+import { authorize } from './utils/auth.util';
 
-// import { createConnection } from 'typeorm';
 
 const env = process.argv?.includes( '--production' ) ? getEnvironment( 'prod' ) : getEnvironment();
 const ANGULAR_DIST_FILES = env?.ANGULAR_DIST_FILES;
@@ -17,12 +17,14 @@ const PORT = env.PORT || 8081;
 
 // Define the routes
 
+const apiRoutesNotAuth: Router = Router();
 const apiRoutes: Router = Router();
 
 // Accounts routes
-apiRoutes.route( '/api/auth/new' ).post( postAccount );
-apiRoutes.route( '/api/accounts/is-auth' ).get( isAccountAuth );
-apiRoutes.route( '/api/accounts/login' ).post( postLoginAccount );
+apiRoutesNotAuth.route( '/api/auth/new' ).post( postAccount );
+apiRoutesNotAuth.route( '/api/accounts/is-auth' ).get( isAccountAuth );
+apiRoutesNotAuth.route( '/api/accounts/login' ).post( postLoginAccount );
+
 apiRoutes.route( '/api/accounts' ).get( getAccounts ).post( postAccount );
 
 // Subscriptions routes
@@ -43,7 +45,9 @@ expressApp.use( express.json() );
 expressApp.use( express.urlencoded( { limit: '200mb', extended: true } ) );
 expressApp.use( cors );
 expressApp.use( logger( 'short' ) );
-// expressApp.use( errorHandler);
+
+expressApp.use( apiRoutesNotAuth );
+expressApp.use( '/api/*', requestResponder( authorize ) );
 expressApp.use( apiRoutes );
 
 expressApp.use( '', requestResponder( ( req: Request, res: Response, next: NextFunction ) => {
