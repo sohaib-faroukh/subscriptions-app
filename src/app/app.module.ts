@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { NavbarModule } from './modules/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule( {
 	declarations: [
@@ -18,6 +20,8 @@ import { SharedModule } from './shared/shared.module';
 		NavbarModule,
 		// ! for test only
 		SharedModule,
+		BrowserAnimationsModule,
+		FontAwesomeModule,
 	],
 	providers: [],
 	bootstrap: [ AppComponent ],

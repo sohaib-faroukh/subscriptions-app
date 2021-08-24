@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ComponentStatus } from 'src/app/core/models/component-status';
+import { Status } from 'src/app/core/models/component-status';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 
 @Component( {
@@ -8,13 +8,13 @@ import { AuthenticationService } from 'src/app/core/services/authentication.serv
 	styleUrls: [ './client-layout.component.scss' ],
 } )
 export class ClientLayoutComponent implements OnInit {
-	loading: ComponentStatus = ComponentStatus.initial;
+	loading: Status = Status.initial;
 	constructor ( public auth: AuthenticationService ) { }
 
 	async ngOnInit (): Promise<void> {
 		// this.loading = ComponentStatus.starting;
 		// await this.auth.isAuth();
-		this.loading = ComponentStatus.done;
+		this.loading = Status.done;
 	}
 
 }

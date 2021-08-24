@@ -32,6 +32,7 @@ export class SubscriptionRepo {
 				createdBy: data.createdBy || '',
 				time: data.time || '',
 				repeat: data.repeat || 'monthly',
+				icon: data?.icon || '',
 			} as any as ISubscriptionDocument
 		);
 		return await newSubscription.save().catch( e => { throw e; } );

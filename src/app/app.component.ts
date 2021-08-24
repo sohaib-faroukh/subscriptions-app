@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ComponentStatus } from './core/models/component-status';
+import { IComponentStatus, Status } from './core/models/component-status';
 import { AuthenticationService } from './core/services/authentication.service';
 
 @Component( {
@@ -7,14 +7,13 @@ import { AuthenticationService } from './core/services/authentication.service';
 	templateUrl: './app.component.html',
 	styleUrls: [ './app.component.scss' ],
 } )
-export class AppComponent implements OnInit {
-
-	loading: ComponentStatus = ComponentStatus.initial;
+export class AppComponent implements OnInit, IComponentStatus {
 	constructor ( public auth: AuthenticationService ) { }
+	status: Status = Status.initial;
+
 
 	async ngOnInit (): Promise<void> {
-		this.loading = ComponentStatus.starting;
-		// await this.auth.isAuth();
-		setTimeout( () => this.loading = ComponentStatus.done, 2000 );
+		this.status = Status.starting;
+		setTimeout( () => this.status = Status.done, 2000 );
 	}
 }
