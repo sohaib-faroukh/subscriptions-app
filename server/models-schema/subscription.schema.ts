@@ -14,6 +14,7 @@ const SubscriptionSchema = new Schema<ISubscriptionDocument>( {
 	secondParty: { type: String, required: true },
 	time: { type: String, required: true },
 	description: { type: String, required: false },
+	icon: { type: String, required: false },
 	repeat: { type: String, required: true, enum: [ 'daily', 'monthly', 'yearly' ] },
 
 } as SchemaDefinition, { collection: 'subscriptions' } );

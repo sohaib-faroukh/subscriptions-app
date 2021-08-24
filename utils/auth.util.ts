@@ -13,8 +13,8 @@ export const authorize = async ( req: Request, res: Response, next: NextFunction
 
 	const token = getToken( req?.headers?.authorization );
 	const decodedAccount = verifyAuthToken( token ) as IAccount;
-	if ( !decodedAccount?.id ) throw new Error( '2. Not authorized' );
-	const foundAccount = await AccountRepo.findOne( { id: decodedAccount?.id } );
+	if ( !decodedAccount?.email ) throw new Error( '2. Not authorized' );
+	const foundAccount = await AccountRepo.findOne( { email: decodedAccount?.email } );
 	if ( !foundAccount ) throw new Error( '3. Not authorized' );
 
 	// after pass all checks go to the next request

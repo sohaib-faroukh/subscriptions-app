@@ -5,7 +5,11 @@ import { AuthenticationService } from './services/authentication.service';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { HttpInterceptorProviders } from './interceptors';
-
+import { SubscriptionService } from './services/subscription.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ModalService } from './services/modal.service';
+import { MaterialModule } from './material-module';
 
 
 @NgModule( {
@@ -14,11 +18,16 @@ import { HttpInterceptorProviders } from './interceptors';
 		CommonModule,
 		RouterModule,
 		HttpClientModule,
+		// MatButtonModule,
+		// MatDialogModule,
+		MaterialModule,
 	],
 	providers: [
-		AuthenticationService,
 		HttpInterceptorProviders,
 		AuthGuard,
+		AuthenticationService,
+		SubscriptionService,
+		ModalService,
 	],
 } )
 /**

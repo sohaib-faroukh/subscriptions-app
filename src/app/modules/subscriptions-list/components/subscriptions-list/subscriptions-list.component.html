@@ -1,1 +1,59 @@
-<p>subscriptions-list works!</p>
+<!-- *************************************************************************************************** -->
+<div class="container-fluid px-3">
+	<div class="row pr-5">
+		<button type="button" class="btn btn-primary ml-auto" (click)="onAddClick()">
+			<i class="fa fa-plus"></i>
+		</button>
+	</div>
+
+	<div class="row d-flex justify-content-center w-100">
+		<div class="col-lg-6">
+			<div class="card">
+
+				<div class="card-body text-center">
+					<h4 class="card-title m-b-0">{{listTitle}}</h4>
+				</div>
+
+				<ng-container *ngIf="status!==2;else loadingRef">
+					<ul class="list-style-none" *ngIf="((subscriptions$ |async) || []).length > 0; else noSubsMsgRef">
+						<ng-container *ngFor="let sub of subscriptions$ |async">
+							<li class="mb-4">
+								<div class="li-content w-100 d-flex">
+									<i *ngIf="sub.icon" [ngClass]="sub.icon" class="w-30px m-t-5"></i>
+
+									<div style="width: calc(85% - 30px);">
+										<a href="#" class="m-b-0 font-medium p-0" data-abc="true">{{sub.secondParty}}</a>
+										<span class="text-muted">{{sub.description}}</span>
+									</div>
+
+									<div style="width: calc(15% - 30px);" class="ml-auto">
+										<div class="tetx-right">
+											<h5 class="text-muted m-b-0">{{sub.day}}</h5> <span
+												class="text-muted font-16">{{sub.month}}</span>
+										</div>
+									</div>
+								</div>
+							</li>
+
+						</ng-container>
+
+
+					</ul>
+				</ng-container>
+				<ng-template #noSubsMsgRef>
+					<span class="text-black-50 text-center">No subscriptions</span>
+				</ng-template>
+
+				<ng-template #loadingRef>
+					<app-spinner></app-spinner>
+				</ng-template>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+
+<!-- *************************************************************************************************** -->

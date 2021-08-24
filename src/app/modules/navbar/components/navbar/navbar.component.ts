@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ComponentStatus } from 'src/app/core/models/component-status';
+import { Status } from 'src/app/core/models/component-status';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { ROUTES_MAP } from 'src/app/routes.map';
 
@@ -10,7 +10,7 @@ import { ROUTES_MAP } from 'src/app/routes.map';
 } )
 export class NavbarComponent implements OnInit {
 
-	loading: ComponentStatus = ComponentStatus.initial;
+	loading: Status = Status.initial;
 
 	constructor ( public auth: AuthenticationService ) { }
 	ngOnInit (): void {
@@ -21,9 +21,9 @@ export class NavbarComponent implements OnInit {
 	}
 
 	onLogout = () => {
-		this.loading = ComponentStatus.starting;
+		this.loading = Status.starting;
 		this.auth.logout();
-		this.loading = ComponentStatus.done;
+		this.loading = Status.done;
 	}
 
 }
