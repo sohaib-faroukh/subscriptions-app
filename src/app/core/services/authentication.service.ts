@@ -37,8 +37,7 @@ export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchO
 				filter( e => [ ROUTES_MAP?.login, ROUTES_MAP.signUp ].map( r => `/${ r }` ).includes( e.url ) ),
 				tap( e => {
 					console.log( `**** from auth service PASSED: `, e.url );
-					// if ( this.isLoggedIn )
-					this.router.navigateByUrl( '/' );
+					if ( this.isLoggedIn ) this.router.navigateByUrl( '/' );
 				} ),
 			).subscribe();
 	}
