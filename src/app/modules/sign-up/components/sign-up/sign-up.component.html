@@ -53,14 +53,17 @@
 				</div>
 				<div class="row pb-2 justify-content-center">
 					<div class="form-check mb-1">
-						<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+						<input class="form-check-input" [formControl]="agreeOnTerms!" type="checkbox" value=""
+							id="flexCheckChecked">
 						<label class="form-check-label text-primary" for="flexCheckChecked">
 							I agree to the Terms of Services and Privacy Policy
 						</label>
 					</div>
 				</div>
 				<div class="row pb-2 justify-content-center">
-					<button [disabled]="!form?.valid" class="mb-1 btn btn-secondary" type="submit">Sign up</button>
+					<button [disabled]="!form?.valid || !agreeOnTerms.value" class="mb-1 btn btn-secondary" type="submit">
+						Sign up
+					</button>
 				</div>
 				<div class="row pb-2 justify-content-center">
 					<a [routerLink]="['/'+routerMap.login]" class="pointer text-sm">Are you already a member ?</a>

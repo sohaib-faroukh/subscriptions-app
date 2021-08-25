@@ -15,6 +15,7 @@ export class SignUpComponent implements OnInit {
 
 	form: FormGroup | undefined;
 	passwordFormControl: FormControl = new FormControl( '', [ Validators.required ] );
+	agreeOnTerms: FormControl = new FormControl( false );
 	constructor (
 		private fb: FormBuilder,
 		public auth: AuthenticationService,

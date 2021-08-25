@@ -24,8 +24,10 @@ const apiRoutes: Router = Router();
 apiRoutesNotAuth.route( '/api/auth/new' ).post( postAccount );
 apiRoutesNotAuth.route( '/api/accounts/is-auth' ).get( isAccountAuth );
 apiRoutesNotAuth.route( '/api/accounts/login' ).post( postLoginAccount );
+apiRoutesNotAuth.route( '/api/accounts' ).post( postAccount );
 
-apiRoutes.route( '/api/accounts' ).get( getAccounts ).post( postAccount );
+
+apiRoutes.route( '/api/accounts' ).get( getAccounts );
 
 // Subscriptions routes
 apiRoutes.route( '/api/subscriptions' ).get( getSubscriptions ).post( postSubscription );
