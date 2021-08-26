@@ -1,17 +1,7 @@
-<!-- <ng-container *ngIf="loading===3;else loadingRef">
+<div [id]="routingService.loadingIndicatorHtmlId" class="loading-indicator">
+	<mat-progress-bar [mode]="routingService.bar.mode" [color]="routingService.bar.color"></mat-progress-bar>
+</div>
 
-	<div class="container-fluid p-0 m-0" style="width: 100vw;min-height: 100vh;">
-		<router-outlet></router-outlet>
-	</div>
-
-</ng-container>
-<ng-template #pleaseLoginRef>
-	<a>
-		please login
-	</a>
-</ng-template>
-<ng-template #loadingRef>
-	<a>Loading dude...</a>
-</ng-template> -->
-
-<router-outlet></router-outlet>
+<div [id]="routingService.appHtmlId" class="body-wrapper container-fluid w-100 p-0 m-0">
+	<router-outlet></router-outlet>
+</div>

@@ -1,11 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InputFieldComponent } from './components/input-field/input-field.component';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbDropdown, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { MaterialModule } from '../core/material.module';
+import { InputFieldComponent } from './components/input-field/input-field.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
-import { ModalComponent } from './components/modal/modal.component';
-import { MaterialModule } from '../core/material-module';
 
 
 
@@ -13,7 +12,6 @@ import { MaterialModule } from '../core/material-module';
 	declarations: [
 		InputFieldComponent,
 		SpinnerComponent,
-		ModalComponent,
 	],
 	imports: [
 		CommonModule,
@@ -27,7 +25,7 @@ import { MaterialModule } from '../core/material-module';
 		NgbDropdownModule,
 		InputFieldComponent,
 		SpinnerComponent,
+		MaterialModule,
 	],
-	entryComponents: [ ModalComponent ],
 } )
 export class SharedModule { }

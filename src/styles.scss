@@ -1,4 +1,6 @@
 @import "~@angular/material/theming";
+@import "custom.scss";
+
 @include mat-core();
 $subscriptions-web-ui-primary: mat-palette($mat-indigo);
 $subscriptions-web-ui-accent: mat-palette($mat-pink, A200, A100, A400);
@@ -46,4 +48,31 @@ mat-dialog-container#modal-component {
 	border: 3px solid #262626;
 	border-radius: 11px;
 	background-color: #1a1a1a;
+}
+
+.mat-progress-bar-fill::after {
+	background-color: black;
+}
+// navigation loader
+.loading-indicator {
+	opacity: 0;
+	z-index: 1051;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+}
+.loading-indicator-show {
+	opacity: 1;
+}
+.pointer-wait {
+	cursor: wait;
+}
+.no-events {
+	pointer-events: none;
+}
+
+.backdrop-brightness-30 {
+	filter: brightness(0.6);
+	background: rgba(0, 0, 0, 0.6);
 }

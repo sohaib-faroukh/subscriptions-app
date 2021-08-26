@@ -5,9 +5,8 @@ import { map } from 'rxjs/operators';
 import { IComponentStatus, Status } from 'src/app/core/models/component-status';
 import { SubscriptionService } from 'src/app/core/services/subscription.service';
 import { stringToDate } from 'utils/date';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { ModalService } from 'src/app/core/services/modal.service';
+import { SubscriptionManageComponent } from 'src/app/modules/subscription-manage/components/subscription-manage/subscription-manage.component';
 
 @Component( {
 	selector: 'app-subscriptions-list',
@@ -58,7 +57,7 @@ export class SubscriptionsListComponent implements OnInit, IComponentStatus {
 
 
 	onAddClick = () => {
-		this.modalService.open( ModalComponent );
+		this.modalService.open( SubscriptionManageComponent );
 	}
 
 

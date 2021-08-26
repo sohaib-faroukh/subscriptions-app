@@ -26,20 +26,6 @@ export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchO
 		this.apiUrl = 'api/accounts';
 		this.counterOfUsage++;
 
-		// TODO: handle routes can be moved to separate service
-		this.router.events
-			.pipe(
-				filter( e => e instanceof NavigationEnd ),
-				map( e => e as NavigationEnd ),
-				tap( e => {
-					console.log( `**** from auth service router pipe: `, e.url );
-				} ),
-				filter( e => [ ROUTES_MAP?.login, ROUTES_MAP.signUp ].map( r => `/${ r }` ).includes( e.url ) ),
-				tap( e => {
-					console.log( `**** from auth service PASSED: `, e.url );
-					if ( this.isLoggedIn ) this.router.navigateByUrl( '/' );
-				} ),
-			).subscribe();
 	}
 
 	get isLoggedIn (): boolean {

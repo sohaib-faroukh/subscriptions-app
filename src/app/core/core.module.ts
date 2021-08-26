@@ -6,10 +6,10 @@ import { RouterModule } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { HttpInterceptorProviders } from './interceptors';
 import { SubscriptionService } from './services/subscription.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
 import { ModalService } from './services/modal.service';
-import { MaterialModule } from './material-module';
+import { MaterialModule } from './material.module';
+import { LoadingBarService } from './services/loading-bar.service';
+import { RoutingService } from './services/routing.service';
 
 
 @NgModule( {
@@ -18,8 +18,6 @@ import { MaterialModule } from './material-module';
 		CommonModule,
 		RouterModule,
 		HttpClientModule,
-		// MatButtonModule,
-		// MatDialogModule,
 		MaterialModule,
 	],
 	providers: [
@@ -28,6 +26,8 @@ import { MaterialModule } from './material-module';
 		AuthenticationService,
 		SubscriptionService,
 		ModalService,
+		LoadingBarService,
+		RoutingService,
 	],
 } )
 /**
