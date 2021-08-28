@@ -19,6 +19,7 @@ export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchO
 
 	public auth$ = new BehaviorSubject<string>( '' );
 	public isLoggedIn$ = new BehaviorSubject<boolean>( false );
+	public loggedInAccount$ = new BehaviorSubject<IAccount | undefined>( undefined );
 
 
 	constructor ( public http: HttpClient, public router: Router ) {
@@ -40,24 +41,24 @@ export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchO
 	 * *  `false` in case failed request
 	 */
 	public isAuth = async (): Promise<boolean> => {
-		let result = false;
+		let result: IAccount | undefined;
 		try {
 			const myToken = getItemFromStorage( this.tokenStorageKey );
 			if ( myToken ) {
-				result = ( await this.http.get<boolean>( `${ this.apiUrl }/is-auth` ).toPromise() ) || false;
+				result = ( await this.http.get<IAccount | undefined>( `${ this.apiUrl }/is-auth` ).toPromise() ) || undefined;
 			}
 			if ( !result ) throw new Error( 'No auth result' );
+			this.loggedInAccount$.next( result );
+			this.isLoggedIn$.next( true );
+			return true;
 
 		} catch ( error ) {
-
-			result = false;
+			result = undefined;
 			console.error( '**** Not logged-in' );
 			console.error( error );
-
-		} finally {
-			this.isLoggedIn$.next( result );
+			this.isLoggedIn$.next( false );
+			return false;
 		}
-		return result;
 	}
 
 
@@ -67,6 +68,7 @@ export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchO
 			.pipe(
 				tap( loggedInAccount => {
 					this.saveToStorage( loggedInAccount );
+					this.loggedInAccount$.next( loggedInAccount );
 					this.isLoggedIn$.next( true );
 					this.router.navigate( [ '/' + ROUTES_MAP.home ] );
 				} )
@@ -79,12 +81,14 @@ export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchO
 			tap( _ => console.log( 'sign-up saved - 1' ) ),
 			tap( _ => this.isLoggedIn$.next( true ) ),
 			tap( newAccount => this.saveToStorage( ( newAccount as any ) ) ),
+			tap( newAccount => this.loggedInAccount$.next( newAccount ) ),
 		);
 	}
 
 	public logout = (): void => {
 		this.deleteFromStorage();
 		this.isLoggedIn$.next( false );
+		this.loggedInAccount$.next( undefined );
 		this.router.navigate( [ '/' + ROUTES_MAP.login ] );
 	}
 

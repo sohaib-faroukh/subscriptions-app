@@ -1,11 +1,20 @@
 <ng-container *ngIf="loading===3;else loadingRef">
+	<div style="width: 100vw;min-height: 100vh;">
 
-	<div class="container-fluid p-0 m-0" style="width: 100vw;min-height: 100vh;"
-		*ngIf="(auth.isLoggedIn$|async )=== true;else pleaseLoginRef">
-		<router-outlet></router-outlet>
+		<div class="container-fluid p-0 m-0" *ngIf="(auth.isLoggedIn$|async )=== true;else pleaseLoginRef">
+
+			<div class="row">
+				<app-navbar></app-navbar>
+			</div>
+
+			<div class="mt-6rem">
+				<router-outlet></router-outlet>
+			</div>
+		</div>
 	</div>
-
 </ng-container>
+
+
 <ng-template #pleaseLoginRef>
 	<a>
 		please login

@@ -25,29 +25,33 @@ export abstract class BaseCrudService<T, Options extends HttpSearchOptions, IdKe
 	}
 
 	protected sync = ( data: T[], isRemove: boolean = false ) => {
-		console.log( '**** syncing...' );
-		const currentData = this.data$.getValue() || [];
+		console.log( '**** base-crud-service - syncing...' );
+
+		const dataToUpdate = this.data$.getValue() || [];
 		for ( const toSyncItem of data ) {
-			const ix = currentData?.findIndex( e => ( e as any )[ this.idKey ] === ( toSyncItem as any )[ this.idKey ] );
+			const ix = dataToUpdate?.findIndex( e => ( e as any )[ this.idKey ] === ( toSyncItem as any )[ this.idKey ] );
 			if ( ix >= 0 ) {
-				if ( isRemove === true ) currentData?.splice( ix, 1 );
-				else currentData[ ix ] = { ...toSyncItem };
+				if ( isRemove === true ) dataToUpdate?.splice( ix, 1 );
+				else dataToUpdate[ ix ] = { ...toSyncItem };
 			}
 			else {
-				if ( !isRemove ) currentData.push( toSyncItem );
+				if ( !isRemove ) dataToUpdate.push( toSyncItem );
 			}
 		}
+		this.data$.next( dataToUpdate );
 	}
 
 	protected pipes = <Some extends T | T[]> ( input: Observable<Some>, withDataSync = true, isRemove = false ): Observable<Some> => {
 		return input.pipe(
-			tap( _ => console.log( 'start pipe' ) ),
+			tap( _ => console.log( '**** base-crud-service - start pipe' ) ),
 			tap( e => withDataSync ? ( Array.isArray( e ) ? this.sync( e as T[], isRemove ) : this.sync( [ e as T ], isRemove ) ) : true ),
 			catchError( errorCatcher )
 		);
 	}
 
 	protected fetch = ( configs?: Options ): Observable<T[]> => {
+
+		console.log( '**** base-crud-service - get', this.apiUrl );
 		return this.pipes(
 			this.http.get<T[]>( this.apiUrl, { params: { ...configs } as any } ).
 				pipe( map( data => ( data || [] ) ) ),
@@ -57,13 +61,12 @@ export abstract class BaseCrudService<T, Options extends HttpSearchOptions, IdKe
 
 
 	public get = ( options?: Options ): Observable<T[]> => {
-		if ( !options && this.data$.getValue()?.length > 0 ) return this.data$;
+		if ( !options && this.data$.getValue()?.length > 0 ) return this.data$.asObservable();
 		else return this.fetch( options );
 	}
 
 	public post = ( payload: T ): Observable<T> => {
-		console.log( 'this.apiUrl: ', this.apiUrl );
-
+		console.log( '**** base-crud-service - post', this.apiUrl );
 		if ( !payload ) throw new Error( 'The payload of http post is not provided' );
 		return this.pipes( this.http.post<T>( this.apiUrl, payload ), true, false );
 	}
@@ -71,12 +74,18 @@ export abstract class BaseCrudService<T, Options extends HttpSearchOptions, IdKe
 	public put = ( id: string | number, payload: T ): Observable<T> => {
 		if ( !payload ) throw new Error( 'The payload of http post is not provided' );
 		if ( !id ) throw new Error( 'The id of http request is not provided' );
-		return this.pipes( this.http.put<T>( `${ this.apiUrl }/${ id }`, payload ), true, false );
+
+		const url = `${ this.apiUrl }/${ id }`;
+		console.log( '**** base-crud-service - put', url );
+		return this.pipes( this.http.put<T>( url, payload ), true, false );
 	}
 
 	public delete = ( id: string | number ): Observable<T> => {
 		if ( !id ) throw new Error( 'The id of http request is not provided' );
-		return this.pipes( this.http.delete<T>( `${ this.apiUrl }/${ id }` ), true, true );
+
+		const url = `${ this.apiUrl }/${ id }`;
+		console.log( '**** base-crud-service - delete', url );
+		return this.pipes( this.http.delete<T>( url ), true, true );
 	}
 
 

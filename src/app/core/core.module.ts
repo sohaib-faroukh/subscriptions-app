@@ -7,9 +7,9 @@ import { AuthGuard } from './guards/auth.guard';
 import { HttpInterceptorProviders } from './interceptors';
 import { SubscriptionService } from './services/subscription.service';
 import { ModalService } from './services/modal.service';
-import { MaterialModule } from './material.module';
 import { LoadingBarService } from './services/loading-bar.service';
 import { RoutingService } from './services/routing.service';
+import { AlertService } from './services/alert.service';
 
 
 @NgModule( {
@@ -18,7 +18,6 @@ import { RoutingService } from './services/routing.service';
 		CommonModule,
 		RouterModule,
 		HttpClientModule,
-		MaterialModule,
 	],
 	providers: [
 		HttpInterceptorProviders,
@@ -28,6 +27,7 @@ import { RoutingService } from './services/routing.service';
 		ModalService,
 		LoadingBarService,
 		RoutingService,
+		AlertService,
 	],
 } )
 /**

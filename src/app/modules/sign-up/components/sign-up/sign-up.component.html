@@ -17,7 +17,7 @@
 							<label class="input-group-text" for="account-type-select-id">Account Type: </label>
 						</div>
 						<select id="account-type-select-id" class="col-3 custom-select" placeholder="Corporate Account"
-							[formControlName]="'type'" name="type-select-name">
+							[formControl]="getControl('type')" name="type-select-name">
 							<option [ngValue]="'personal'">Personal</option>
 							<option [ngValue]="'corporate'">Corporate</option>
 						</select>
@@ -27,28 +27,28 @@
 
 
 				<div class="row">
-					<app-input-field class="w-100" [placeholder]="'First Name'" [isWithLabel]="false"
-						[formControlName]="'firstName'">
+					<app-input-field class="w-100" [placeholder]="'Enter your first name'" [label]="'First Name'"
+						[isWithLabel]="true" [formControl]="getControl('firstName')">
 					</app-input-field>
 				</div>
 				<div class="row">
-					<app-input-field class="w-100" [placeholder]="'Last Name'" [isWithLabel]="false"
-						[formControlName]="'lastName'">
+					<app-input-field class="w-100" [placeholder]="'Enter your last name'" [label]="'Last Name'"
+						[isWithLabel]="true" [formControl]="getControl('lastName')">
 					</app-input-field>
 				</div>
 				<div class="row">
-					<app-input-field class="w-100" [placeholder]="'Email'" [isWithLabel]="false" [type]="'email'"
-						[formControlName]="'email'">
+					<app-input-field class="w-100" [placeholder]="'Enter your email'" [label]="'Email'" [isWithLabel]="true"
+						[type]="'email'" [formControl]="getControl('email')">
 					</app-input-field>
 				</div>
 				<div class="row">
-					<app-input-field class="w-100" [placeholder]="'Password'" [isWithLabel]="false" [type]="'password'"
-						[formControlName]="'password'"></app-input-field>
+					<app-input-field class="w-100" [placeholder]="'Enter your password'" [label]="'Password'" [isWithLabel]="true"
+						[type]="'password'" [formControl]="getControl('password')"></app-input-field>
 				</div>
 				<div class="row">
-					<app-input-field class="w-100" [placeholder]="'Password'" [isWithLabel]="false" [type]="'password'"
-						[formControl]="passwordFormControl!"
-						[errors]="passwordFormControl?.value !== formControl('password')?.value ? {notMatchedPassword:true}:null">
+					<app-input-field class="w-100" [placeholder]="'Confirm your password'" [label]="'Confirm Password'"
+						[isWithLabel]="true" [type]="'password'" [formControl]="passwordFormControl!"
+						[errors]="passwordFormControl?.value !== getControl('password')?.value ? {notMatchedPassword:true}:null">
 					</app-input-field>
 				</div>
 				<div class="row pb-2 justify-content-center">

@@ -21,6 +21,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 		MaterialModule,
 	],
 	exports: [
+		FormsModule,
 		ReactiveFormsModule,
 		NgbDropdownModule,
 		InputFieldComponent,

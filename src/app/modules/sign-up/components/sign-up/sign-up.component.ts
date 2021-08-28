@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { IAccount } from 'models/account';
 import { PasswordRegexMap } from 'src/app/core/configurations/password-regexps';
+import { AlertService } from 'src/app/core/services/alert.service';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { ROUTES_MAP } from 'src/app/routes.map';
 
@@ -20,6 +21,7 @@ export class SignUpComponent implements OnInit {
 		private fb: FormBuilder,
 		public auth: AuthenticationService,
 		public router: Router,
+		private alert: AlertService,
 	) { }
 
 	ngOnInit (): void {
@@ -42,8 +44,8 @@ export class SignUpComponent implements OnInit {
 		} );
 	}
 
-	formControl = ( name: string ) => {
-		return this.form?.controls[ name ];
+	getControl = ( name: string ): FormControl => {
+		return this.form?.get( name ) as FormControl || null;
 	}
 
 	onSubmit = async () => {
@@ -54,11 +56,11 @@ export class SignUpComponent implements OnInit {
 			await ( this.auth.signUp( toSubmitValue ).toPromise() );
 
 			this.router.navigate( [ '/home' ] );
-			alert( 'login successfully' );
+			this.alert.success( 'Registered successfully' );
 
 
 		} catch ( error ) {
-			alert( 'failed to login' );
+			this.alert.danger( error?.error?.error || 'failed to login' );
 		}
 		finally {
 

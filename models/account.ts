@@ -25,3 +25,6 @@ export class Account extends IdentityWithLogInfo implements IAccount {
 	isCorporate: boolean = false;
 }
 
+export interface IAccountVM extends IAccount {
+	fullName?: string;
+}

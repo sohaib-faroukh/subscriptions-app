@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 import { ISubscription } from '../../models/subscription';
 import { ISubscriptionDocument } from '../../server/models-schema/subscription.schema';
 import { SubscriptionRepo } from '../../server/repositories/subscriptions.repo';
@@ -32,7 +32,6 @@ export const getSubscriptions: RequestHandler[] = [
 
 
 export const postSubscription: RequestHandler[] = [
-	body( 'firstParty' ).exists().bail().isString(),
 	body( 'secondParty' ).exists().bail().isString(),
 	body( 'time' ).exists().bail().isString(),
 	body( 'description' ).optional().isString(),
@@ -40,11 +39,18 @@ export const postSubscription: RequestHandler[] = [
 	requestValidator,
 	requestResponder( async ( req: Request, res: Response, next: NextFunction ) => {
 
+		if ( !req?.headers?.authorization ) throw new Error( 'Please login' );
+
 		const payload = req?.body as Partial<ISubscription>;
 		const current = getCurrent();
 
+
+		const loggedInAccount = ( await getLoggedInAccount( req.headers.authorization ) );
+		if ( !loggedInAccount ) throw new Error( 'Please login' );
+
+		payload.firstParty = loggedInAccount.id || '';
 		payload.id = uuid();
-		payload.createdBy = ( await getLoggedInAccount( req.headers.authorization ) )?.id || '';
+		payload.createdBy = loggedInAccount.id || '';
 		payload.createdAt = current;
 		payload.updatedAt = current;
 
@@ -53,6 +59,25 @@ export const postSubscription: RequestHandler[] = [
 		const result = ( await SubscriptionRepo.insert( newSubscription ) ) || null;
 
 		return result;
+
+	} ),
+
+];
+
+
+export const deleteSubscription: RequestHandler[] = [
+	param( 'id' ).exists().bail().isString(),
+	requestValidator,
+	requestResponder( async ( req: Request, res: Response, next: NextFunction ) => {
+
+		if ( !req?.headers?.authorization ) throw new Error( 'Please login' );
+		const { id } = req.params;
+
+		const subscription = await SubscriptionRepo.findOne( { id } );
+		if ( !subscription ) throw new Error( 'subscriptions is not exist' );
+
+		await SubscriptionRepo.delete( id );
+		return subscription;
 
 	} ),
 

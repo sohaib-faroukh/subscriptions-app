@@ -7,42 +7,41 @@ import { uuid } from 'utils/uuid';
 interface ModalMap<D> {
 	[ key: string ]: MatDialogRef<D>;
 }
-
+class MatDialogRefId<T> extends MatDialogRef<T>{
+	public id: string = '';
+}
 @Injectable()
 export class ModalService {
 
-	public modalRef: MatDialogRef<any> & { id: string } | null = null;
+	public modalRef: MatDialogRefId<any> | null = null;
 	private _config = new MatDialogConfig();
 	public modals: ModalMap<any> = {};
 	public modals$ = new BehaviorSubject<ModalMap<any>>( {} );
 
 	constructor ( public matDialog: MatDialog ) { }
 
-	register = <D = any> ( id: string, modalDialogRef: MatDialogRef<D> ) => {
-		this.modalRef = { ...modalDialogRef, id } as MatDialogRef<D>;
-		this.modals[ id ] = modalDialogRef;
-		this.modals$.next( this.modals );
-	}
-
 	open = <T, D = any, R = any> ( component: ComponentType<T>, config?: MatDialogConfig<D> ): MatDialogRef<T, R> => {
 
-		// TODO: abstract dialog config
-		const dialogConfig = new MatDialogConfig();
+		const dialogConfig = { ...config, closeOnNavigation: true } as MatDialogConfig;
 		dialogConfig.position = { top: '6rem' };
-		// dialogConfig.height = 'calc(100vh - 30%)';
-		// dialogConfig.width = '50vw';
+
 
 		const newId = uuid();
 		dialogConfig.id = newId;
+		console.log( '**** dialog -  dialogConfig: ', dialogConfig );
+
 		const modalDialogRef = this.matDialog.open( component, dialogConfig );
 		this.modals[ newId ] = modalDialogRef;
 		this.modals$.next( this.modals );
+		this.modalRef = modalDialogRef as MatDialogRef<T> & { id: string };
+		this.modalRef.id = newId;
 		return modalDialogRef;
 	}
 
 
 	close = () => {
 		if ( !this.modalRef ) return;
+		console.log( '**** dialog -  closing...' );
 		const id = this.modalRef.id;
 		delete this.modals[ id ];
 		this.modals$.next( this.modals );
