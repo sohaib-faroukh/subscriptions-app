@@ -6,4 +6,6 @@ export const ROUTES_MAP = {
 	login: 'login',
 	signUp: 'sign-up',
 	home: 'home',
+	subscriptions: 'subscriptions',
+	addSubscription: 'new',
 };

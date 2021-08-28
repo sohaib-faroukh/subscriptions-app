@@ -30,12 +30,17 @@ export class SubscriptionRepo {
 				firstParty: data.firstParty || '',
 				secondParty: data.secondParty || '',
 				createdBy: data.createdBy || '',
+				count: data.count || 1,
 				time: data.time || '',
 				repeat: data.repeat || 'monthly',
 				icon: data?.icon || '',
 			} as any as ISubscriptionDocument
 		);
 		return await newSubscription.save().catch( e => { throw e; } );
+	}
+
+	static delete = async ( id: string ) => {
+		return ( await SubscriptionRepo.model.deleteOne( { id } ) );
 	}
 
 }

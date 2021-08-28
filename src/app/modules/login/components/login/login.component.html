@@ -13,13 +13,14 @@
 				</div>
 
 				<div class="row">
-					<app-input-field class="w-100" [placeholder]="'Email'" [isWithLabel]="false" [type]="'email'"
-						[formControlName]="'email'">
+					<app-input-field class="w-100" [placeholder]="'Enter your email'" [isWithLabel]="true" [type]="'email'"
+						[formControl]="getControl('email')" [label]="'Email'">
 					</app-input-field>
 				</div>
 				<div class="row">
-					<app-input-field class="w-100" [placeholder]="'Password'" [isWithLabel]="false" [type]="'password'"
-						[formControlName]="'password'"></app-input-field>
+					<app-input-field class="w-100" [placeholder]="'Enter your password'" [label]="'Password'" [isWithLabel]="true"
+						[type]="'password'" [formControl]="getControl('password')">
+					</app-input-field>
 				</div>
 
 				<div class="row pb-2 justify-content-center">

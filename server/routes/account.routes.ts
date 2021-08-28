@@ -50,7 +50,7 @@ export const isAccountAuth: RequestHandler[] = [
 		const result = ( await AccountRepo.findOne( { email: account?.email } ) );
 		if ( !result ) throw new Error( 'The token account is not found' );
 
-		return true;
+		return result as IAccount;
 
 	} ),
 

@@ -5,6 +5,7 @@ export interface ICalenderEvent extends IIdentityWithLogInfo {
 	time: string;
 	description?: string;
 	repeat?: 'daily' | 'monthly' | 'yearly';
+	count?: number;
 	reminders?: IReminder[],
 }
 
@@ -12,6 +13,7 @@ export class CalenderEvent extends IdentityWithLogInfo implements ICalenderEvent
 	time: string = getCurrent();
 	description?: string = '';
 	repeat?: 'daily' | 'monthly' | 'yearly' = 'monthly';
+	count = 1;
 	reminders?: IReminder[] = [
 		{ before: 30, unit: 'minutes', type: 'email', event: this.id },
 	];

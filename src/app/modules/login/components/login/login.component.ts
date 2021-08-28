@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IAccount } from 'models/account';
 import { Subscription } from 'rxjs';
 import { PasswordRegexMap } from 'src/app/core/configurations/password-regexps';
+import { AlertService } from 'src/app/core/services/alert.service';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { ROUTES_MAP } from 'src/app/routes.map';
 
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 		private fb: FormBuilder,
 		public auth: AuthenticationService,
 		public router: Router,
+		private alert: AlertService,
 	) { }
 
 	ngOnInit (): void {
@@ -46,18 +48,21 @@ export class LoginComponent implements OnInit, OnDestroy {
 			password: [ '', [ Validators.required, Validators.pattern( PasswordRegexMap.strong.pattern ) ] ],
 		} );
 	}
+
+
+	getControl = ( name: string ): FormControl => {
+		return this.form?.get( name ) as FormControl || null;
+	}
+
+
 	onSubmit = async () => {
 		try {
 			const object = this.fromValue;
 			if ( !object?.email || !object.password ) throw new Error( 'Please enter email and password' );
 			await this.auth.login( this.fromValue ).toPromise();
-			alert( 'submitted' );
-
+			this.alert.success( 'logged in successfully' );
 		} catch ( error ) {
-			alert( 'failed to login' );
-		}
-		finally {
-
+			this.alert.danger( error?.error?.error || 'failed to login' );
 		}
 	}
 

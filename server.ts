@@ -6,7 +6,7 @@ import { cors } from './utils/cors.util';
 import { db } from './server/configurations/db';
 import * as logger from 'morgan';
 import { requestResponder } from './utils/request-responder.util';
-import { getSubscriptions, postSubscription } from './server/routes/subscription.routes';
+import { deleteSubscription, getSubscriptions, postSubscription } from './server/routes/subscription.routes';
 import { authorize } from './utils/auth.util';
 
 
@@ -20,7 +20,7 @@ const PORT = env.PORT || 8081;
 const apiRoutesNotAuth: Router = Router();
 const apiRoutes: Router = Router();
 
-// Accounts routes
+// * Accounts routes
 apiRoutesNotAuth.route( '/api/auth/new' ).post( postAccount );
 apiRoutesNotAuth.route( '/api/accounts/is-auth' ).get( isAccountAuth );
 apiRoutesNotAuth.route( '/api/accounts/login' ).post( postLoginAccount );
@@ -29,8 +29,9 @@ apiRoutesNotAuth.route( '/api/accounts' ).post( postAccount );
 
 apiRoutes.route( '/api/accounts' ).get( getAccounts );
 
-// Subscriptions routes
+// * Subscriptions routes
 apiRoutes.route( '/api/subscriptions' ).get( getSubscriptions ).post( postSubscription );
+apiRoutes.route( '/api/subscriptions/:id' ).delete( deleteSubscription );
 
 
 apiRoutes.route( '/*' ).get( ( req, res ) =>

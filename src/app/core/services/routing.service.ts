@@ -13,7 +13,7 @@ export class RoutingService implements OnDestroy {
 
 	loadingIndicatorHtmlId = 'loading-indicator-id';
 	appHtmlId = 'app-id';
-	timeout = 750;
+	timeout = 250;
 	bar: {
 		mode: ProgressBarMode,
 		color?: string,
@@ -41,26 +41,23 @@ export class RoutingService implements OnDestroy {
 			.pipe(
 				filter( e => e instanceof NavigationEnd ),
 				map( e => e as NavigationEnd ),
-				tap( e => {
-					console.log( `**** from auth service router pipe: `, e.url );
-				} ),
 				filter( e => [ ROUTES_MAP?.login, ROUTES_MAP.signUp ].map( r => `/${ r }` ).includes( e.url ) ),
 				tap( e => {
-					console.log( `**** from auth service PASSED: `, e.url );
-					if ( this.auth.isLoggedIn ) this.router.navigateByUrl( '/' );
+					console.log( `**** routing - from auth service PASSED: `, e.url );
+					if ( this.auth.isLoggedIn ) this.router.navigateByUrl( e.url || '/' );
 				} ),
 			).subscribe();
 		this.subs.add( sub );
 	}
 	ngOnDestroy (): void {
-		console.log( `**** ${ RoutingService.name } ngOnDestroy` );
+		console.log( `**** routing - ${ RoutingService.name } ngOnDestroy` );
 		this.subs.unsubscribe();
 	}
 
 
 
 	setLoading = ( value: boolean, isIssue = false ) => {
-		console.log( '**** setting loading value...', value );
+		console.log( '**** routing - setting loading value...', value );
 		this._loadingBar.reset();
 		this._loading = value;
 		this.loading$.next( this._loading );
@@ -69,7 +66,7 @@ export class RoutingService implements OnDestroy {
 			this._loadingBar.start();
 		}
 		else {
-			const timeout = this.timeout < 1500 ? 1500 : ( this.timeout > 4000 ? this.timeout / 2 : this.timeout );
+			const timeout = this.timeout < 500 ? 500 : ( this.timeout > 4000 ? this.timeout / 2 : this.timeout );
 			setTimeout( () => {
 				this.removeLoadingClasses();
 			}, timeout );
@@ -108,7 +105,7 @@ export class RoutingService implements OnDestroy {
 
 
 	addLoadingClasses = () => {
-		console.log( '**** setting classes' );
+		console.log( '**** routing - setting classes' );
 		const appDOM = this.document.getElementById( this.appHtmlId );
 		const indicatorDOM = this.document.getElementById( this.loadingIndicatorHtmlId );
 
@@ -126,7 +123,7 @@ export class RoutingService implements OnDestroy {
 	}
 
 	removeLoadingClasses = () => {
-		console.log( '**** removing classes' );
+		console.log( '**** routing - removing classes' );
 		const appDOM = this.document.getElementById( this.appHtmlId );
 		const indicatorDOM = this.document.getElementById( this.loadingIndicatorHtmlId );
 
