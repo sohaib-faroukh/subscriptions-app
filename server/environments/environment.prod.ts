@@ -9,6 +9,7 @@ export const environment = {
 		secret: process.env.JWT_SECRET,
 		jwtTokenLifeTime: '100',
 	},
+	storageBucket: 'accounts-files',
 	db: {
 		name: 'default',
 		type: 'mongodb',
