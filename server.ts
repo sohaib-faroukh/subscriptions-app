@@ -11,15 +11,18 @@ import { authorize } from './utils/auth.util';
 import { geAccountFiles, postFile } from './server/routes/file.routes';
 
 
+
 const env = process.argv?.includes( '--production' ) ? getEnvironment( 'prod' ) : getEnvironment();
 const ANGULAR_DIST_FILES = env?.ANGULAR_DIST_FILES;
+const STORAGE_DEST = getEnvironment().storageBucket;
 const PORT = env.PORT || 8081;
 
 
-// Define the routes
+// * Define the routes
 
 const apiRoutesNotAuth: Router = Router();
 const apiRoutes: Router = Router();
+
 
 // * Accounts routes
 apiRoutesNotAuth.route( '/api/auth/new' ).post( postAccount );
@@ -39,30 +42,30 @@ apiRoutes.route( '/api/subscriptions/:id' ).delete( deleteSubscription );
 apiRoutes.route( '/api/files' ).get( geAccountFiles ).post( postFile );
 
 
-
-
+// * Frontend application files
 apiRoutes.route( '/*' ).get( ( req, res ) =>
 	res.sendFile( ANGULAR_DIST_FILES.rootFile, { root: ANGULAR_DIST_FILES.path } )
 );
 
 
 
-// Bootstrapping the application
+// * Bootstrapping the application
 const expressApp = express();
 
 expressApp.use( express.static( ANGULAR_DIST_FILES.path ) );
+expressApp.use( '/' + STORAGE_DEST, express.static( STORAGE_DEST ) );
 expressApp.use( express.json() );
 expressApp.use( express.urlencoded( { limit: '200mb', extended: true } ) );
+
 expressApp.use( cors );
 expressApp.use( logger( 'short' ) );
-
 expressApp.use( apiRoutesNotAuth );
 expressApp.use( '/api/*', requestResponder( authorize ) );
 expressApp.use( apiRoutes );
-
 expressApp.use( '', requestResponder( ( req: Request, res: Response, next: NextFunction ) => {
 	throw new Error( 'Route is not implemented' );
 } ) );
+
 
 const bootstrapTheApp = async () => {
 	expressApp.listen( PORT, async () => {

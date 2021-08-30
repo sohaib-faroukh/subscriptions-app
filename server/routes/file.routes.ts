@@ -1,19 +1,15 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { body } from 'express-validator';
 import { IFile } from 'models/file';
-import { resolve } from 'path';
-import { getEnvironment } from '../environments/env.util';
-import { IFileDocument } from '../models-schema/file.schema';
 import { getCurrent } from '../../utils/date';
-import { FileNameHandler } from '../../utils/file-name.util';
+import { fileUploader, FileUploaderFieldName } from '../../utils/file-uploader.util';
 import { QueryParam } from '../../utils/query-param';
 import { requestResponder } from '../../utils/request-responder.util';
 import { requestValidator } from '../../utils/request-validator.util';
 import { uuid } from '../../utils/uuid';
+import { IFileDocument } from '../models-schema/file.schema';
 import { FileRepo } from '../repositories/file.repo';
 import { getLoggedInAccount } from './account.routes';
-
-// TODO: create upload file API (it will be called after post API to store the file, then update the status of the file)
 
 /**
  * GET api for get all files for admin
@@ -64,9 +60,13 @@ export const geAccountFiles: RequestHandler[] = [
 
 ];
 
-
+/**
+ * post and upload file API
+ */
 export const postFile: RequestHandler[] = [
-	body( 'name' ).exists().isString(),
+	fileUploader.single( FileUploaderFieldName ),
+	body( 'refPath' ).optional().isString(),
+	body( 'lastModifiedDate' ).optional().isString(),
 	requestValidator,
 	requestResponder( async ( req: Request, res: Response, next: NextFunction ) => {
 
@@ -77,26 +77,25 @@ export const postFile: RequestHandler[] = [
 		const loggedInAccount = await getLoggedInAccount( req.headers.authorization );
 		if ( !loggedInAccount ) throw new Error( 'The logged in account is not found' );
 
-		// set valid name & id
-		const fileId = uuid();
-		const fileName = FileNameHandler.combineFileName( fileId, payload?.name || '' ) || '';
+		// get file  path form req.file
+		if ( !req.file ) throw new Error( 'No file is provided' );
+		const myFile = req.file;
 
-		// build up the path of the file
-		const dirPath = `${ getEnvironment().storageBucket }/` || 'accounts-files/';
-		const filePath = resolve( dirPath, fileName ) || '';
 
 		const myData: IFile = {
-			id: fileId,
+			id: uuid(),
 			createdAt: current,
 			updatedAt: current,
 			createdBy: loggedInAccount?.id || '',
-			name: fileName,
-			path: filePath,
 			owner: loggedInAccount?.id || '',
-			mediaType: payload?.mediaType || '',
-			type: payload?.type || '',
+			refPath: payload?.refPath || '',
 			lastModifiedDate: payload?.lastModifiedDate || current,
-			size: payload?.size || 0,
+			status: 'uploaded',
+			/* from the attached file  */
+			name: myFile?.originalname || '', /* for view on screen*/
+			path: myFile?.path || '',
+			mediaType: myFile?.mimetype || '',
+			size: myFile?.size || 0,
 		};
 
 

@@ -4,6 +4,7 @@
 
 export const environment = {
 	production: false,
+	FileUploaderFieldName: 'attachedFile',
 	JWT_STORAGE_KEY: 'app_jwt_token',
 	apiBaseUrl: 'http://localhost:4500/',
 	storagePrefix: 'X_dev_app_subs',

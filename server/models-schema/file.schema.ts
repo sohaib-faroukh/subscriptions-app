@@ -16,7 +16,7 @@ const FileSchema = new Schema<IFileDocument>( {
 	status: { type: String, required: true, enum: [ 'empty', 'uploading', 'error', 'uploaded', 'removed' ] },
 	owner: { type: String, required: false },
 	mediaType: { type: String, required: false },
-	type: { type: String, required: false },
+	refPath: { type: String, required: false },
 	size: { type: Number, required: false },
 	lastModifiedDate: { type: String, required: false },
 

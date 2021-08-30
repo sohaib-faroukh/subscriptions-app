@@ -8,6 +8,6 @@ export interface IFile extends IIdentityWithLogInfo {
 	mediaType?: string;
 	size?: number;
 	lastModifiedDate?: string;
-	type?: string;
+	refPath?: string;
 	owner?: string;
 }
