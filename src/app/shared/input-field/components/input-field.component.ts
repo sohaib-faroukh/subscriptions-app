@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, forwardRef, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
 import { FloatLabelType, MatFormFieldAppearance } from '@angular/material/form-field';
 import { PasswordRegexMap } from 'src/app/core/configurations/password-regexps';
 import { ParamString } from 'src/app/core/utils/params-string';
 
 
-type FieldTypes = 'text' | 'textarea' | 'email' | 'number' | 'password' | 'time' | 'select';
+type FieldTypes = 'text' | 'textarea' | 'email' | 'number' | 'password' | 'time' | 'select' | 'file';
 const ErrorMessagesMap: { [ key: string ]: string } = {
 	required: 'required value',
 	pattern: 'invalid value',
@@ -52,6 +52,8 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
 	@Input() selectOptions: any[] = [];
 	@Input() selectOptionKey = '';
 	@Input() selectOptionTitle = '';
+
+	@Output() uploadedFilesChange = new EventEmitter<File[]>();
 
 
 	required = false;
@@ -144,6 +146,17 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
 		} );
 
 		return ( errorsArray || [] )?.map( e => ( e?.toString() ) )?.join( ', ' ) || '';
+	}
+
+
+	onFileUploadChange = ( value: Event ) => {
+		console.log( '**** **** **** **** onFileUploadChange...' );
+
+		if ( !value ) throw new Error( 'Invalid event parameter for uploading file method' );
+		const myFile: File | null = ( ( ( value.target as any )?.files || [] ) as FileList ).item( 0 );
+		if ( !myFile ) throw new Error( 'No uploaded file' );
+		this.uploadedFilesChange.emit( [ myFile ] );
+		this.control.setValue( myFile.name );
 	}
 
 

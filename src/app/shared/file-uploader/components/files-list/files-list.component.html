@@ -1,0 +1,50 @@
+<div class="card border-5 border-primary mx-4 my-2">
+	<div class="card-body border-5 shadow-lg w-auto">
+		<span class="text-primary h5">{{title}}</span>
+		<!-- <div class="container"> -->
+
+		<div class="d-flex">
+			<button type="button" (click)="onAddFileClick()" class="ml-auto btn btn-outline-primary btn-primary">
+				<i class="fa fa-plus"></i>
+			</button>
+		</div>
+		<div class="px-3">
+			<table class="m-2 table table-sm table-hover table-borderless">
+				<caption>{{((data$ | async) || []).length}} Files </caption>
+				<thead class="border-bottom border-dark">
+					<tr>
+						<th>Name</th>
+						<th>Size</th>
+						<th>Uploaded at</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody class="text-muted">
+					<ng-container *ngFor="let item of (data$ | async) || []">
+						<tr>
+							<td>
+								<a [href]="item.path" target="_blank" class="text-info text-hover-primary">
+									{{item.name}}
+								</a>
+							</td>
+
+							<td>{{item.size || ''}}</td>
+
+							<td>
+								<span>{{item.createdAt}}
+								</span>
+							</td>
+
+							<td>
+								<a class="text-primary pointer">
+									<i class="fa fa-trash on-hover"></i>
+								</a>
+							</td>
+						</tr>
+					</ng-container>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

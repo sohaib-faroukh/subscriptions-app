@@ -100,3 +100,23 @@
 
 
 </ng-container>
+
+
+<!-- * FILE -->
+<ng-container *ngIf="['file'].includes(type)">
+	<mat-form-field [appearance]="appearance" class="w-100" [floatLabel]="isFloatLabel">
+		<mat-label *ngIf="isWithLabel && label">{{label || placeholder || ''}}</mat-label>
+		<input matInput [readonly]="true" type="text" [formControl]="control!">
+		<button type="button" mat-icon-button matSuffix [attr.aria-label]="'Click to upload'"
+			(click)="fileUploaderInputRef?.click()">
+			<i class="fa fa-2x fa-arrow-circle-up mb-3 text-primary"></i>
+		</button>
+		<mat-error *ngIf="isWithErrorMessage && (control?.dirty || control?.touched)  && fieldErrors">
+			&nbsp;{{getErrorMessage()}}
+		</mat-error>
+	</mat-form-field>
+
+	<input [type]="'file'" [hidden]="true" [readonly]="true" [id]="id || 'file-uploader-input'" #fileUploaderInputRef
+		(change)="onFileUploadChange($event)">
+
+</ng-container>

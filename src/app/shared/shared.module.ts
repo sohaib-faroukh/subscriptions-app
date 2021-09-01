@@ -2,15 +2,15 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { MaterialModule } from '../core/material.module';
-import { InputFieldComponent } from './components/input-field/input-field.component';
+import { MaterialModule } from './material.module';
+import { InputFieldModule } from './input-field/input-field.module';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { FileUploaderModule } from './file-uploader/file-uploader.module';
 
 
 
 @NgModule( {
 	declarations: [
-		InputFieldComponent,
 		SpinnerComponent,
 	],
 	imports: [
@@ -19,14 +19,17 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 		ReactiveFormsModule,
 		NgbDropdownModule,
 		MaterialModule,
+		InputFieldModule,
+		FileUploaderModule,
 	],
 	exports: [
 		FormsModule,
 		ReactiveFormsModule,
 		NgbDropdownModule,
-		InputFieldComponent,
+		InputFieldModule,
 		SpinnerComponent,
 		MaterialModule,
+		FileUploaderModule,
 	],
 } )
 export class SharedModule { }

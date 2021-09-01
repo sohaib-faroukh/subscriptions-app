@@ -5,12 +5,12 @@
 		</button>
 	</div>
 
-	<div class="row d-flex justify-content-center w-100">
+	<div class="row d-flex justify-content-center w-100" style="height: calc( 100vh - 9.4rem);">
 		<div class="col-lg-6">
 			<div class="card">
 
 				<div class="card-body text-center">
-					<h4 class="card-title m-b-0">{{listTitle}}</h4>
+					<h4 class="card-title m-b-0 text-shadow">{{listTitle}}</h4>
 				</div>
 
 				<ng-container *ngIf="status!==2;else loadingRef">
@@ -21,7 +21,7 @@
 									<i *ngIf="sub.icon" [ngClass]="sub.icon" class="w-30px m-t-5"></i>
 
 									<div style="width: calc(85% - 30px);">
-										<a href="#" class="m-b-0 font-medium text-capitalize p-0" data-abc="true">
+										<a href="#" class="text-primary m-b-0 font-medium text-capitalize p-0" data-abc="true">
 											{{sub?.secondPartyName || ''}}
 										</a>
 										<span class="text-muted ">{{sub.description}}</span>
@@ -34,7 +34,7 @@
 									</div>
 
 									<div class="ml-auto d-flex align-items-center">
-										<div class="text-right text-danger" (click)="onDeleteClick(sub.id!)">
+										<div class="text-right text-primary" (click)="onDeleteClick(sub.id!)">
 											<i class="fa fa-trash fa-lg on-hover"></i>
 										</div>
 									</div>

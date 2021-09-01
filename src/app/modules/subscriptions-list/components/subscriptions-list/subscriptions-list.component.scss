@@ -51,9 +51,8 @@ ul.list-style-none li .li-content {
 	transition: all ease 0.2s;
 }
 ul.list-style-none li:hover .li-content {
-	transform: scale(1.02);
-	background-color: rgba(226, 224, 224, 0.653);
-	padding: 0.7rem;
+	transform: translateX(0.7rem);
+	border-bottom: 1px solid #6c757d;
 	transition: all ease 0.2s;
 }
 

@@ -14,7 +14,7 @@ export const cleanDateFormat = ( date: Moment | Date ): string => {
 };
 
 
-export const formatDate = ( date: Moment | Date | string ): string => {
+export const formatDate = ( date: Moment | Date | string | number ): string => {
 	return moment( date )?.format( DATE_FORMAT );
 };
 
