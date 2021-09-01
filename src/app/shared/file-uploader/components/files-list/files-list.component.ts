@@ -35,7 +35,6 @@ export class FilesListComponent implements OnInit {
 		if ( this?.data?.refPath ) this.refPath = this.data.refPath;
 	}
 
-
 	onAddFileClick = () => {
 		const ref = this.modalService.open( FileUploaderComponent, { data: { refPath: this.refPath } } );
 		console.log( '**** ref.id: ', ref.id );
