@@ -41,5 +41,10 @@ export class FileRepo {
 
 	}
 
+
+	static delete = async ( id: string ) => {
+		return ( await FileRepo.model.deleteOne( { id } ) );
+	}
+
 }
 

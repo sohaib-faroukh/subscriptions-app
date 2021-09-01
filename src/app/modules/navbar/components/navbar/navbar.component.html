@@ -4,7 +4,7 @@
 	<nav class="fixed-top navbar navbar-expand-lg navbar-light bg-white  shadow-sm py-3">
 		<div class="container-fluid"><a class="navbar-brand" [routerLink]="['/'+routerMap.empty]">
 				<img src="assets/theme/img/favicon.png" alt="..."></a>
-			<span class="h4 m-0">Subscriptions</span>
+			<span class="h4 m-0 text-shadow">Subscriptions</span>
 			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
 				data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
 				aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -48,7 +48,7 @@
 					</ng-container>
 					<ng-template #logoutBtnRef>
 						<li class="nav-item dropdown" *ngIf="loggedInAccount$ | async as currentAccount">
-							<a class="nav-link text-capitalize pointer" id="profile-drop-down-id" data-toggle="dropdown"
+							<a class="nav-link text-capitalize pointer text-shadow" id="profile-drop-down-id" data-toggle="dropdown"
 								aria-haspopup="true" aria-expanded="false">
 								{{currentAccount.fullName}}
 								<i class="fa fa-lg fa-user-circle pl-1 pr-4"></i>

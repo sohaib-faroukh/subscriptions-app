@@ -39,7 +39,9 @@ export class ModalService {
 	}
 
 
-	close = () => {
+	close = ( paramModalRef?: MatDialog ) => {
+
+		if ( paramModalRef ) paramModalRef.closeAll();
 		if ( !this.modalRef ) return;
 		console.log( '**** dialog -  closing...' );
 		const id = this.modalRef.id;

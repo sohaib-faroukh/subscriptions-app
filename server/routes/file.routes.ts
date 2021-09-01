@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { body } from 'express-validator';
-import { IFile } from 'models/file';
+import { body, param } from 'express-validator';
+import { IFile } from '../../models/file';
 import { getCurrent } from '../../utils/date';
 import { fileUploader, FileUploaderFieldName } from '../../utils/file-uploader.util';
 import { QueryParam } from '../../utils/query-param';
@@ -108,3 +108,37 @@ export const postFile: RequestHandler[] = [
 	} ),
 
 ];
+
+
+
+
+/**
+ * delete a file API
+ */
+export const deleteFile: RequestHandler[] = [
+	param( 'id' ).exists().bail().isString(),
+	requestValidator,
+	requestResponder( async ( req: Request, res: Response, next: NextFunction ) => {
+
+		const id: string = req.params.id || '';
+		if ( !id ) throw new Error( 'Id is empty' );
+
+		if ( !req?.headers?.authorization ) throw new Error( 'Not authorized' );
+
+		const myFile = ( await FileRepo.findOne( { id } ) ) || null;
+		if ( !myFile ) throw new Error( 'File not found' );
+
+		const loggedInAccount = ( await getLoggedInAccount( req.headers.authorization ) );
+		if ( !loggedInAccount ) throw new Error( 'You user is not found' );
+
+		if ( myFile.owner !== loggedInAccount?.id ) throw new Error( 'You user is not authorized to delete this file' );
+
+
+		await FileRepo.delete( id );
+
+		return myFile;
+
+	} ),
+
+];
+

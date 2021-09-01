@@ -1,5 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { IAccountVM } from 'models/account';
 import { IFormBuilder } from 'models/generics/form-builder';
 import { ISubscription } from 'models/subscription';
@@ -47,6 +48,7 @@ export class SubscriptionManageComponent implements OnInit, OnDestroy, IComponen
 		public srv: SubscriptionService,
 		public auth: AuthenticationService,
 		public alert: AlertService,
+		@Optional() public dialog?: MatDialog,
 	) {
 		this.myFormGroup = this.build();
 	}
@@ -107,7 +109,7 @@ export class SubscriptionManageComponent implements OnInit, OnDestroy, IComponen
 			take( 1 ),
 			takeUntil( this.destroy$ ),
 			tap( () => this.alert.success( 'added successfully' ) ),
-			tap( () => this.modal.close() ),
+			tap( () => this.modal.close( this.dialog ) ),
 		).subscribe();
 	}
 

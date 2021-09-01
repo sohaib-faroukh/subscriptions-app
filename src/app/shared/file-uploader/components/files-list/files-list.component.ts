@@ -1,6 +1,7 @@
 import { Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map } from 'rxjs/operators';
+import { AlertService } from 'src/app/core/services/alert.service';
 import { FileService } from 'src/app/core/services/file.service';
 import { ModalService } from 'src/app/core/services/modal.service';
 import { FileUploaderComponent } from '../file-uploader/file-uploader.component';
@@ -26,6 +27,7 @@ export class FilesListComponent implements OnInit {
 	constructor (
 		private fileService: FileService,
 		public modalService: ModalService,
+		private alert: AlertService,
 		@Optional() @Inject( MAT_DIALOG_DATA ) public data?: { refPath: string }
 	) { }
 
@@ -33,8 +35,22 @@ export class FilesListComponent implements OnInit {
 		if ( this?.data?.refPath ) this.refPath = this.data.refPath;
 	}
 
+
 	onAddFileClick = () => {
 		const ref = this.modalService.open( FileUploaderComponent, { data: { refPath: this.refPath } } );
 		console.log( '**** ref.id: ', ref.id );
+	}
+
+
+	onDeleteClick = async ( id: string ) => {
+		try {
+
+			if ( !confirm( 'Are you sure ?' ) ) return;
+			await this.fileService.delete( id ).toPromise();
+			this.alert.info( 'Deleted successfully' );
+
+		} catch ( error ) {
+			this.alert.danger( 'Could not delete this file' );
+		}
 	}
 }

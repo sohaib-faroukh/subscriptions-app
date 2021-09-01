@@ -8,7 +8,7 @@ import * as logger from 'morgan';
 import { requestResponder } from './utils/request-responder.util';
 import { deleteSubscription, getSubscriptions, postSubscription } from './server/routes/subscription.routes';
 import { authorize } from './utils/auth.util';
-import { geAccountFiles, postFile } from './server/routes/file.routes';
+import { deleteFile, geAccountFiles, postFile } from './server/routes/file.routes';
 
 
 
@@ -40,6 +40,7 @@ apiRoutes.route( '/api/subscriptions/:id' ).delete( deleteSubscription );
 
 // * Files routes
 apiRoutes.route( '/api/files' ).get( geAccountFiles ).post( postFile );
+apiRoutes.route( '/api/files/:id' ).delete( deleteFile );
 
 
 // * Frontend application files
