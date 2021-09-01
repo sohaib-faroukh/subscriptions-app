@@ -10,7 +10,7 @@ import { ROUTES_MAP } from 'src/app/routes.map';
 } )
 export class HomeComponent implements OnInit {
 	loading: Status = Status.initial;
-
+	year = ( new Date() ).getFullYear();
 	constructor ( public auth: AuthenticationService ) { }
 	ngOnInit (): void {
 	}

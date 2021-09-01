@@ -11,3 +11,10 @@ export interface IFile extends IIdentityWithLogInfo {
 	refPath?: string;
 	owner?: string;
 }
+
+
+
+
+export interface IFileVM extends IFile {
+	file?: File;
+}

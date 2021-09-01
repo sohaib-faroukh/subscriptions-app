@@ -1,0 +1,27 @@
+<!-- <form (ngSubmit)="onSubmit()"> -->
+
+
+
+<mat-dialog-content class="mat-typography">
+	<h2 mat-dialog-title>{{title}}</h2>
+	<h2>{{refPath}}</h2>
+
+	<div class="container-fluid">
+		<div class="row">
+			<app-input-field [isWithLabel]="true" [type]="'file'" [label]="'Upload the file please'"
+				[placeholder]="'Please click to open file uploader'" [formControl]="formControl"
+				(uploadedFilesChange)="files = $event">
+			</app-input-field>
+		</div>
+	</div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+	<div class="d-flex justify-content-end w-100">
+		<button type="submit" class="m-1 btn btn-primary" [disabled]="formControl?.invalid"
+			(click)="onSubmit()">Save</button>
+		<button type="button" class="m-1 btn btn-secondary" (click)="modal.close()">Cancel</button>
+	</div>
+</mat-dialog-actions>
+
+<!-- </form> -->

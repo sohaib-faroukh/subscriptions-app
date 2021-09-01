@@ -12,6 +12,7 @@ import { AuthenticationService } from 'src/app/core/services/authentication.serv
 import { ModalService } from 'src/app/core/services/modal.service';
 import { SubscriptionService } from 'src/app/core/services/subscription.service';
 import { CustomValidators } from 'src/app/core/utils/validators';
+import { FilesListComponent } from 'src/app/shared/file-uploader/components/files-list/files-list.component';
 import { formatDate, getCurrentDate, momentToDate } from 'utils/date';
 import { fullName } from 'utils/full-name';
 

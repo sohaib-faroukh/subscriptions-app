@@ -10,6 +10,7 @@ import { ModalService } from './services/modal.service';
 import { LoadingBarService } from './services/loading-bar.service';
 import { RoutingService } from './services/routing.service';
 import { AlertService } from './services/alert.service';
+import { FileService } from './services/file.service';
 
 
 @NgModule( {
@@ -28,6 +29,7 @@ import { AlertService } from './services/alert.service';
 		LoadingBarService,
 		RoutingService,
 		AlertService,
+		FileService,
 	],
 } )
 /**
