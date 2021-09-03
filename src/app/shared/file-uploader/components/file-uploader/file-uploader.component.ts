@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IFile, IFileVM } from 'models/file';
 import { tap } from 'rxjs/operators';
+import { IComponentStatus, Status } from 'src/app/core/models/component-status';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { FileService } from 'src/app/core/services/file.service';
 import { ModalService } from 'src/app/core/services/modal.service';
@@ -13,7 +14,7 @@ import { formatDate } from 'utils/date';
 	templateUrl: './file-uploader.component.html',
 	styleUrls: [ './file-uploader.component.scss' ],
 } )
-export class FileUploaderComponent implements OnInit {
+export class FileUploaderComponent implements OnInit, IComponentStatus {
 
 	@Input() title = 'Upload a file';
 	@Input() isMultiple = false;
@@ -22,7 +23,7 @@ export class FileUploaderComponent implements OnInit {
 	path = '';
 	formControl = new FormControl( '', [ Validators.required ] );
 	files: File[] = [];
-
+	status: Status = Status.initial;
 	constructor (
 		public fileService: FileService,
 		public modal: ModalService,
@@ -37,6 +38,8 @@ export class FileUploaderComponent implements OnInit {
 
 	onSubmit = async () => {
 		try {
+
+			this.status = Status.submitting;
 			if ( !this.files || this.files.length === 0 ) throw new Error( 'No uploaded files' );
 
 			if ( this.isMultiple ) await this.uploadFiles( this.files );
@@ -45,6 +48,9 @@ export class FileUploaderComponent implements OnInit {
 
 		} catch ( error ) {
 			this.alert.danger( error?.message || error?.error?.error || 'An error happened' );
+		}
+		finally {
+			this.status = Status.done;
 		}
 	}
 

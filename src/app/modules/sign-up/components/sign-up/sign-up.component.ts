@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { IAccount } from 'models/account';
 import { PasswordRegexMap } from 'src/app/core/configurations/password-regexps';
+import { IComponentStatus, Status } from 'src/app/core/models/component-status';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { ROUTES_MAP } from 'src/app/routes.map';
@@ -12,11 +13,13 @@ import { ROUTES_MAP } from 'src/app/routes.map';
 	templateUrl: './sign-up.component.html',
 	styleUrls: [ './sign-up.component.scss' ],
 } )
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, IComponentStatus {
 
 	form: FormGroup | undefined;
 	passwordFormControl: FormControl = new FormControl( '', [ Validators.required ] );
 	agreeOnTerms: FormControl = new FormControl( false );
+	status: Status = Status.initial;
+
 	constructor (
 		private fb: FormBuilder,
 		public auth: AuthenticationService,
@@ -50,6 +53,7 @@ export class SignUpComponent implements OnInit {
 
 	onSubmit = async () => {
 		try {
+			this.status = Status.submitting;
 			const toSubmitValue = { ...this.formValue } as IAccount;
 			toSubmitValue.type ||= 'personal';
 
@@ -63,7 +67,7 @@ export class SignUpComponent implements OnInit {
 			this.alert.danger( error?.error?.error || 'failed to login' );
 		}
 		finally {
-
+			this.status = Status.done;
 		}
 	}
 

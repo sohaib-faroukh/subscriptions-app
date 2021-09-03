@@ -24,7 +24,8 @@
 				</div>
 
 				<div class="row pb-2 justify-content-center">
-					<button [disabled]="!form?.valid" class="mb-1 btn btn-secondary" type="submit">Login</button>
+					<button [appLoadingButton]="status===4" [disabled]="!form?.valid" class="mb-1 btn btn-secondary"
+						type="submit">Login</button>
 				</div>
 				<div class="row pb-2 justify-content-center">
 					<a [routerLink]="['/'+routerMap.signUp]" class="pointer text-sm">Create new account ?</a>

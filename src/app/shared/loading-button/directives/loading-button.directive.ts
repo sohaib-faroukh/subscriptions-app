@@ -2,7 +2,7 @@ import { ComponentFactoryResolver, ComponentRef, Directive, ElementRef, Embedded
 import { SpinnerComponent } from '../../spinner/components/spinner/spinner.component';
 
 @Directive( {
-	selector: 'button[appLoadingButton]',
+	selector: 'button[appLoadingButton], a[appLoadingButton]',
 } )
 export class LoadingButtonDirective implements OnInit, OnChanges {
 

@@ -1,6 +1,7 @@
 import { Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map } from 'rxjs/operators';
+import { IComponentStatus, Status } from 'src/app/core/models/component-status';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { FileService } from 'src/app/core/services/file.service';
 import { ModalService } from 'src/app/core/services/modal.service';
@@ -11,7 +12,7 @@ import { FileUploaderComponent } from '../file-uploader/file-uploader.component'
 	templateUrl: './files-list.component.html',
 	styleUrls: [ './files-list.component.scss' ],
 } )
-export class FilesListComponent implements OnInit {
+export class FilesListComponent implements OnInit, IComponentStatus {
 
 
 
@@ -19,6 +20,8 @@ export class FilesListComponent implements OnInit {
 	@Input() refPath = '';
 	@Input() isFilterByRefPath = false;
 
+	status: Status = Status.initial;
+	deletingItem = '';
 
 	data$ = this.fileService.data$.pipe(
 		map( data => this.isFilterByRefPath ? data.filter( item => item.refPath === this.refPath ) : data )
@@ -40,16 +43,20 @@ export class FilesListComponent implements OnInit {
 		console.log( '**** ref.id: ', ref.id );
 	}
 
-
 	onDeleteClick = async ( id: string ) => {
 		try {
-
+			this.deletingItem = id;
+			this.status = Status.deleting;
 			if ( !confirm( 'Are you sure ?' ) ) return;
 			await this.fileService.delete( id ).toPromise();
 			this.alert.info( 'Deleted successfully' );
 
 		} catch ( error ) {
 			this.alert.danger( 'Could not delete this file' );
+		}
+		finally {
+			this.status = Status.done;
+			this.deletingItem = '';
 		}
 	}
 }

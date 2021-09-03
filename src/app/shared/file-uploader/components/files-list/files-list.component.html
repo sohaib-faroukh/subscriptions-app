@@ -36,7 +36,8 @@
 							</td>
 
 							<td>
-								<a class="text-primary pointer" (click)="onDeleteClick(item.id)">
+								<a [appLoadingButton]="status===5 && deletingItem===item.id" class="text-primary pointer"
+									(click)="onDeleteClick(item.id)">
 									<i class="fa fa-trash on-hover"></i>
 								</a>
 							</td>

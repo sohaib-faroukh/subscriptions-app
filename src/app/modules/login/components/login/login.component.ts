@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { IAccount } from 'models/account';
 import { Subscription } from 'rxjs';
 import { PasswordRegexMap } from 'src/app/core/configurations/password-regexps';
+import { IComponentStatus, Status } from 'src/app/core/models/component-status';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { ROUTES_MAP } from 'src/app/routes.map';
@@ -13,10 +14,12 @@ import { ROUTES_MAP } from 'src/app/routes.map';
 	templateUrl: './login.component.html',
 	styleUrls: [ './login.component.scss' ],
 } )
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy, IComponentStatus {
 
 	form: FormGroup | undefined;
 	subs: Subscription = new Subscription();
+	status: Status = Status.initial;
+
 	constructor (
 		private fb: FormBuilder,
 		public auth: AuthenticationService,
@@ -57,12 +60,16 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 	onSubmit = async () => {
 		try {
+			this.status = Status.submitting;
 			const object = this.fromValue;
 			if ( !object?.email || !object.password ) throw new Error( 'Please enter email and password' );
 			await this.auth.login( this.fromValue ).toPromise();
 			this.alert.success( 'logged in successfully' );
 		} catch ( error ) {
 			this.alert.danger( error?.error?.error || 'failed to login' );
+		}
+		finally {
+			this.status = Status.done;
 		}
 	}
 
