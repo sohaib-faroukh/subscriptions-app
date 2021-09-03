@@ -1,40 +1,36 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { getSubscriptionVM, ISubscription, ISubscriptionVM } from 'models/subscription';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, from, of, Subscription } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { IComponentStatus, Status } from 'src/app/core/models/component-status';
-import { SubscriptionService } from 'src/app/core/services/subscription.service';
-import { stringToDate } from 'utils/date';
-import { ModalService } from 'src/app/core/services/modal.service';
-import { SubscriptionManageComponent } from 'src/app/modules/subscription-manage/components/subscription-manage/subscription-manage.component';
-import { AuthenticationService } from 'src/app/core/services/authentication.service';
-import { IAccount } from 'models/account';
-import { IMap } from 'models/generics/map';
-import { arrayToMap } from 'utils/map.util';
-import { fullName } from 'utils/full-name';
 import { AlertService } from 'src/app/core/services/alert.service';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
+import { ModalService } from 'src/app/core/services/modal.service';
+import { SubscriptionService } from 'src/app/core/services/subscription.service';
+import { SubscriptionManageComponent } from 'src/app/modules/subscription-manage/components/subscription-manage/subscription-manage.component';
+import { arrayToMap } from 'utils/map.util';
 
 @Component( {
 	selector: 'app-subscriptions-list',
 	templateUrl: './subscriptions-list.component.html',
 	styleUrls: [ './subscriptions-list.component.scss' ],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 } )
-export class SubscriptionsListComponent implements OnInit, IComponentStatus {
+export class SubscriptionsListComponent implements OnInit, OnDestroy, IComponentStatus {
 	@Input() listTitle = 'Subscriptions that soon to expire';
 	@Input() subscriptions: ISubscription[] = [];
 
 	subscriptions$ = new BehaviorSubject<ISubscriptionVM[]>( [] );
 
-	accounts: IMap<IAccount> = {};
+	// accounts: IMap<IAccount> = {};
 
 	_subscriptions: ISubscriptionVM[] = [];
 	status: Status = Status.initial;
 
+	subs: Subscription = new Subscription();
+
 	constructor (
 		public auth: AuthenticationService,
 		public service: SubscriptionService,
-		private cd: ChangeDetectorRef,
 		private modalService: ModalService,
 		private alert: AlertService,
 	) { }
@@ -43,21 +39,33 @@ export class SubscriptionsListComponent implements OnInit, IComponentStatus {
 		this.init();
 	}
 
-	init = async () => {
-		this.accounts = arrayToMap( await this.auth.get().toPromise() || [] );
 
-		this.status = Status.loading;
+	ngOnDestroy (): void {
+		console.log( '*****  SubscriptionsListComponent - Destroy' );
+		this.subscriptions$.next( [] );
+		this.subs.unsubscribe();
+	}
+
+
+
+	init = () => {
 		try {
-			await this.service.get().toPromise();
-			this.service.data$.pipe(
-				map( data => data.map( item => getSubscriptionVM( item, this.accounts ) ) ),
-			).subscribe( this.subscriptions$ );
+			this.service.get().toPromise();
+			const observable = combineLatest( [
+				of( this.status = Status.loading ),
+				this.service.data$,
+				this.auth.get().pipe(
+					map( accounts => arrayToMap( accounts || [] ) ),
+				),
+			] ).pipe(
+				map( ( [ , data, accounts ] ) => data.map( item => getSubscriptionVM( item, accounts ) ) ),
+				tap( () => { setTimeout( () => { this.status = Status.done; }, 500 ); } ),
+				catchError( ( err, c ) => { throw err; } )
+			);
+			this.subs.add( observable.subscribe( this.subscriptions$ ) );
 		} catch ( error ) {
+			this.status = Status.initial;
 			console.error( error );
-		}
-		finally {
-			this.status = Status.done;
-			setTimeout( () => this.cd.detectChanges(), 500 );
 		}
 	}
 

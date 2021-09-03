@@ -10,5 +10,9 @@ export class SubscriptionService extends BaseCrudService<ISubscription, HttpSear
 	constructor ( public http: HttpClient ) {
 		super( http );
 		this.apiUrl = 'api/subscriptions';
+
+		console.log( '**** SubscriptionService - fetch ' );
+
+		this.fetch().toPromise();
 	}
 }

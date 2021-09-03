@@ -21,10 +21,10 @@
 			</mat-error>
 
 			<ng-container *ngIf="isPassword">
-				<a (click)="togglePassword()" class="input-post-icon">
-					<i class="fa fa-eye-slash m-3 fa-lg" *ngIf="type==='password';else hidePasswordIconRef"> </i>
+				<a (click)="togglePassword()" class="h-100 d-flex input-post-icon">
+					<i class="fa fa-eye-slash m-auto fa-lg" *ngIf="type==='password';else hidePasswordIconRef"> </i>
 					<ng-template #hidePasswordIconRef>
-						<i class="fa fa-eye m-3 fa-lg"></i>
+						<i class="fa fa-eye m-auto fa-lg"></i>
 					</ng-template>
 				</a>
 			</ng-container>

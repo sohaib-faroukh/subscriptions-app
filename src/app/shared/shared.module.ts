@@ -4,15 +4,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { MaterialModule } from './material.module';
 import { InputFieldModule } from './input-field/input-field.module';
-import { SpinnerComponent } from './components/spinner/spinner.component';
 import { FileUploaderModule } from './file-uploader/file-uploader.module';
+import { SpinnerModule } from './spinner/spinner.module';
+import { LoadingButtonModule } from './loading-button/loading-button.module';
 
 
 
 @NgModule( {
-	declarations: [
-		SpinnerComponent,
-	],
 	imports: [
 		CommonModule,
 		FormsModule,
@@ -21,15 +19,18 @@ import { FileUploaderModule } from './file-uploader/file-uploader.module';
 		MaterialModule,
 		InputFieldModule,
 		FileUploaderModule,
+		SpinnerModule,
+		LoadingButtonModule,
 	],
 	exports: [
 		FormsModule,
 		ReactiveFormsModule,
 		NgbDropdownModule,
 		InputFieldModule,
-		SpinnerComponent,
 		MaterialModule,
 		FileUploaderModule,
+		SpinnerModule,
+		LoadingButtonModule,
 	],
 } )
 export class SharedModule { }
