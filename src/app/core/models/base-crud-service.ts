@@ -82,7 +82,6 @@ export abstract class BaseCrudService<T, Options extends HttpSearchOptions, IdKe
 
 	public delete = ( id: string | number ): Observable<T> => {
 		if ( !id ) throw new Error( 'The id of http request is not provided' );
-
 		const url = `${ this.apiUrl }/${ id }`;
 		console.log( '**** base-crud-service - delete', url );
 		return this.pipes( this.http.delete<T>( url ), true, true );

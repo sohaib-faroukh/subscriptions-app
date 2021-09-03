@@ -104,10 +104,11 @@ export class SubscriptionManageComponent implements OnInit, OnDestroy, IComponen
 	}
 
 	private handleSubmit = ( values: ISubscription ) => {
-
+		this.status = Status.submitting;
 		this.srv.post( values ).pipe(
 			take( 1 ),
 			takeUntil( this.destroy$ ),
+			tap( () => this.status = Status.done ),
 			tap( () => this.alert.success( 'added successfully' ) ),
 			tap( () => this.modal.close( this.dialog ) ),
 		).subscribe();

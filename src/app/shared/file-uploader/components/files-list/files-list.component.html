@@ -1,5 +1,5 @@
-<div class="card border-5 border-primary mx-4 my-2">
-	<div class="card-body border-5 shadow-lg w-auto">
+<div class="card">
+	<div class="card-body w-auto">
 		<span class="text-primary h5">{{title}}</span>
 		<!-- <div class="container"> -->
 
@@ -36,7 +36,8 @@
 							</td>
 
 							<td>
-								<a class="text-primary pointer" (click)="onDeleteClick(item.id)">
+								<a [appLoadingButton]="status===5 && deletingItem===item.id" class="text-primary pointer"
+									(click)="onDeleteClick(item.id)">
 									<i class="fa fa-trash on-hover"></i>
 								</a>
 							</td>

@@ -24,7 +24,11 @@ export const getSubscriptions: RequestHandler[] = [
 		const repo = ( await SubscriptionRepo.findAll() );
 		const subscriptions: ISubscriptionDocument[] = repo || [];
 
+		// const current = getCurrent();
 		return subscriptions;
+
+		// * for the records with time lesser or equal current date
+		// .filter(d=>d.time <= current );
 
 	} ),
 

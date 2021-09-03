@@ -13,7 +13,7 @@ export class SubscriptionRepo {
 		return ( await SubscriptionRepo.model.findOne( filters ) );
 	}
 	static findAll = async ( filters?: any ) => {
-		return ( await SubscriptionRepo.model.find( filters ) );
+		return ( await SubscriptionRepo.model.find( filters ).sort( { time: -1 } ) );
 	}
 	static findById = async ( id: string ) => {
 		return ( await SubscriptionRepo.model.findById( id ) );

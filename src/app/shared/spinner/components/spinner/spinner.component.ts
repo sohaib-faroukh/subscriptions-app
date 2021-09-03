@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
+
+type Sizes = 'small' | 'large';
+
 
 @Component( {
 	selector: 'app-spinner',
@@ -7,7 +10,9 @@ import { Component, OnInit } from '@angular/core';
 } )
 export class SpinnerComponent implements OnInit {
 
-	constructor () { }
+	@Input() data: { size: Sizes } = { size: 'large' };
+
+	constructor ( public _elementRef: ElementRef ) { }
 
 	ngOnInit (): void {
 	}

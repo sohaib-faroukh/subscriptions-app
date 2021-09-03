@@ -18,9 +18,9 @@
 
 <mat-dialog-actions>
 	<div class="d-flex justify-content-end w-100">
-		<button type="submit" class="m-1 btn btn-primary" [disabled]="formControl?.invalid"
+		<button type="submit" class="m-1 btn btn-primary" [appLoadingButton]="status===4" [disabled]="formControl?.invalid"
 			(click)="onSubmit()">Save</button>
-		<button type="button" class="m-1 btn btn-secondary" (click)="modal.close()">Cancel</button>
+		<button [disabled]="status===4" type="button" class="m-1 btn btn-secondary" (click)="modal.close()">Cancel</button>
 	</div>
 </mat-dialog-actions>
 
