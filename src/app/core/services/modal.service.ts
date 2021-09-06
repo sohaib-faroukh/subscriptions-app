@@ -22,7 +22,14 @@ export class ModalService {
 
 	open = <T, D = any, R = any> ( component: ComponentType<T>, config?: MatDialogConfig<D> ): MatDialogRef<T, R> => {
 
-		const dialogConfig = { ...config, closeOnNavigation: true } as MatDialogConfig;
+		const dialogConfig = {
+			...config,
+			closeOnNavigation: true,
+			margin: '0',
+			maxHeight: '80vh',
+			disableClose: true,
+			hasBackdrop: true,
+		} as MatDialogConfig;
 		dialogConfig.position = { top: '6rem' };
 
 

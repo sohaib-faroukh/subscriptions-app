@@ -7,18 +7,22 @@ import { FileService } from 'src/app/core/services/file.service';
 import { ModalService } from 'src/app/core/services/modal.service';
 import { FileUploaderComponent } from '../file-uploader/file-uploader.component';
 
+interface StyleMap { [ key: string ]: string }
+
 @Component( {
 	selector: 'app-files-list',
 	templateUrl: './files-list.component.html',
 	styleUrls: [ './files-list.component.scss' ],
 } )
 export class FilesListComponent implements OnInit, IComponentStatus {
-
+	defaultStyle: StyleMap = { 'min-width': '100%', height: '70%', 'max-width': '90vw' };
 
 
 	@Input() title = 'Upload a file';
 	@Input() refPath = '';
 	@Input() isFilterByRefPath = false;
+	@Input() additionalField: { [ key: string ]: boolean } = {};
+	@Input() ngStyle: StyleMap = {};
 
 	status: Status = Status.initial;
 	deletingItem = '';
@@ -27,6 +31,9 @@ export class FilesListComponent implements OnInit, IComponentStatus {
 		map( data => this.isFilterByRefPath ? data.filter( item => item.refPath === this.refPath ) : data )
 	);
 
+	get style (): StyleMap {
+		return { ...this.defaultStyle, ...this.ngStyle };
+	}
 	constructor (
 		private fileService: FileService,
 		public modalService: ModalService,

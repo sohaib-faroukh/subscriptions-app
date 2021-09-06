@@ -33,6 +33,9 @@ body {
 	background-color: transparent;
 	border: 0;
 }
+.navbar.fixed-top {
+	z-index: 1000;
+}
 
 .mt-6rem {
 	margin-top: 6rem;
