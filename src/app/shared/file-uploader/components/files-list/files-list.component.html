@@ -1,21 +1,30 @@
+<style>
+	tr>th:first-child {
+		width: 45%;
+	}
+
+	tr>td {
+		word-break: break-word;
+	}
+</style>
 <div class="card">
-	<div class="card-body w-auto">
+	<div class="card-body w-auto pt-4 px-0">
 		<span class="text-primary h5">{{title}}</span>
 		<!-- <div class="container"> -->
 
-		<div class="d-flex">
+		<div class="d-flex w-100">
 			<button type="button" (click)="onAddFileClick()" class="ml-auto btn btn-outline-primary btn-primary">
 				<i class="fa fa-plus"></i>
 			</button>
 		</div>
-		<div class="px-3">
-			<table class="m-2 table table-sm table-hover table-borderless">
+		<div class="px-2 w-100">
+			<table [ngStyle]="style" class="m-2 table table-sm table-hover table-borderless">
 				<caption>{{((data$ | async) || []).length}} Files </caption>
 				<thead class="border-bottom border-dark">
 					<tr>
 						<th>Name</th>
-						<th>Size</th>
-						<th>Uploaded at</th>
+						<th *ngIf="additionalField['size']">Size</th>
+						<th *ngIf="additionalField['createdAt']">Uploaded at</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -28,9 +37,9 @@
 								</a>
 							</td>
 
-							<td>{{item.size || ''}}</td>
+							<td *ngIf="additionalField['size']">{{item.size || ''}}</td>
 
-							<td>
+							<td *ngIf="additionalField['createdAt']">
 								<span>{{item.createdAt}}
 								</span>
 							</td>

@@ -33,6 +33,13 @@ body {
 	background-color: transparent;
 	border: 0;
 }
+// .fixed-top {
+// 	z-index: 1000 !important;
+// }
+
+.cdk-overlay-container {
+	z-index: 1050 !important;
+}
 
 .mt-6rem {
 	margin-top: 6rem;
