@@ -4,7 +4,7 @@
 	<!-- <mat-dialog-content class="mat-typography"> -->
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-6 mb-2">
 				<div class="container-fluid border py-3">
 					<div class="row">
 						<div class="col-12 col-md-6" *ngIf="getControl('secondParty') as secondPartyCtl">
@@ -53,7 +53,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-6">
+			<div class="col-md-6 mb-2">
 				<div class="container-fluid border">
 					<app-files-list [refPath]="'subscriptions'" [isFilterByRefPath]="true" [additionalField]="{size:true}">
 					</app-files-list>
