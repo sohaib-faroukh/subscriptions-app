@@ -26,7 +26,6 @@ export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchO
 		super( http );
 		this.apiUrl = 'api/accounts';
 		this.counterOfUsage++;
-
 	}
 
 	get isLoggedIn (): boolean {

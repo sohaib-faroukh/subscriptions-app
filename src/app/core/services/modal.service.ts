@@ -30,7 +30,7 @@ export class ModalService {
 			disableClose: true,
 			hasBackdrop: true,
 		} as MatDialogConfig;
-		dialogConfig.position = { top: '10%' };
+		dialogConfig.position = { top: '5%' };
 
 
 		const newId = uuid();

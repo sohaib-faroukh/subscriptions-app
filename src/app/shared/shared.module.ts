@@ -7,6 +7,7 @@ import { InputFieldModule } from './input-field/input-field.module';
 import { FileUploaderModule } from './file-uploader/file-uploader.module';
 import { SpinnerModule } from './spinner/spinner.module';
 import { LoadingButtonModule } from './loading-button/loading-button.module';
+import { PipesModule } from './pipes/pipes.module';
 
 
 
@@ -21,6 +22,7 @@ import { LoadingButtonModule } from './loading-button/loading-button.module';
 		FileUploaderModule,
 		SpinnerModule,
 		LoadingButtonModule,
+		PipesModule,
 	],
 	exports: [
 		FormsModule,
@@ -31,6 +33,7 @@ import { LoadingButtonModule } from './loading-button/loading-button.module';
 		FileUploaderModule,
 		SpinnerModule,
 		LoadingButtonModule,
+		PipesModule,
 	],
 } )
 export class SharedModule { }

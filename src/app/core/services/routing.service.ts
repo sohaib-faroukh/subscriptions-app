@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { ProgressBarMode } from '@angular/material/progress-bar';
 import { NavigationStart, NavigationEnd, NavigationCancel, NavigationError, Router } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { ROUTES_MAP } from 'src/app/routes.map';
 import { AuthenticationService } from './authentication.service';
@@ -37,16 +37,21 @@ export class RoutingService implements OnDestroy {
 	constructor ( private router: Router, private auth: AuthenticationService, @Inject( DOCUMENT ) private document: Document, private _loadingBar: LoadingBarService ) {
 		this._loadingBar.interval = this.timeout;
 		this.animateNavigation();
-		const sub = this.router.events
-			.pipe(
-				filter( e => e instanceof NavigationEnd ),
-				map( e => e as NavigationEnd ),
-				filter( e => [ ROUTES_MAP?.login, ROUTES_MAP.signUp ].map( r => `/${ r }` ).includes( e.url ) ),
-				tap( e => {
-					console.log( `**** routing - from auth service PASSED: `, e.url );
-					if ( this.auth.isLoggedIn ) this.router.navigateByUrl( e.url || '/' );
-				} ),
-			).subscribe();
+		const obs = combineLatest( [
+			this.router.events
+				.pipe(
+					filter( e => e instanceof NavigationEnd ),
+					map( e => e as NavigationEnd ),
+				),
+			this.auth.isLoggedIn$,
+		] ).pipe(
+			filter( ( [ e ] ) => [ ROUTES_MAP?.login, ROUTES_MAP.signUp ].includes( e.url?.replace( '/', '' ) ) ),
+			tap( ( [ e, isLoggedIn ] ) => {
+				console.log( `**** routing - from auth service PASSED: `, e.url, isLoggedIn );
+				if ( isLoggedIn ) this.router.navigateByUrl( '/' );
+			} ),
+		);
+		const sub = obs.subscribe();
 		this.subs.add( sub );
 	}
 	ngOnDestroy (): void {

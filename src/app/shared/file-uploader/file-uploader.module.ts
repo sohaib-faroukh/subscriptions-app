@@ -5,6 +5,7 @@ import { FilesListComponent } from './components/files-list/files-list.component
 import { InputFieldModule } from '../input-field/input-field.module';
 import { MaterialModule } from '../material.module';
 import { LoadingButtonModule } from '../loading-button/loading-button.module';
+import { PipesModule } from '../pipes/pipes.module';
 
 
 
@@ -13,6 +14,7 @@ import { LoadingButtonModule } from '../loading-button/loading-button.module';
 	imports: [
 		CommonModule,
 		MaterialModule,
+		PipesModule,
 		InputFieldModule,
 		LoadingButtonModule,
 	],
