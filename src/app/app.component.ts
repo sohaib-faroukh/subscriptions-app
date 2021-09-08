@@ -15,6 +15,7 @@ export class AppComponent implements OnInit, IComponentStatus {
 
 	async ngOnInit (): Promise<void> {
 		this.status = Status.starting;
+		this.auth.isAuth();
 		setTimeout( () => this.status = Status.done, 2000 );
 	}
 }

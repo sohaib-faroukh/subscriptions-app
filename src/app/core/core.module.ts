@@ -11,10 +11,7 @@ import { LoadingBarService } from './services/loading-bar.service';
 import { RoutingService } from './services/routing.service';
 import { AlertService } from './services/alert.service';
 import { FileService } from './services/file.service';
-
-
 @NgModule( {
-	declarations: [],
 	imports: [
 		CommonModule,
 		RouterModule,

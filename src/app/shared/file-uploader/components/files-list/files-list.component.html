@@ -37,7 +37,7 @@
 								</a>
 							</td>
 
-							<td *ngIf="additionalField['size']">{{item.size || ''}}</td>
+							<td *ngIf="additionalField['size']">{{ item.size | fileSize }}</td>
 
 							<td *ngIf="additionalField['createdAt']">
 								<span>{{item.createdAt}}
