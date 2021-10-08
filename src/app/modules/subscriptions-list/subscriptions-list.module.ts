@@ -8,7 +8,12 @@ import { AuthGuard } from 'src/app/core/guards/auth.guard';
 
 const routes: Routes = [
 	{
-		path: ROUTES_MAP.empty, pathMatch: 'full', component: SubscriptionsListComponent,
+		path: ROUTES_MAP.empty, children: [
+			{ path: ROUTES_MAP.empty, pathMatch: 'full', component: SubscriptionsListComponent },
+			{
+				path: 'calendar', loadChildren: () => import( '../../modules/subscriptions-calendar/subscriptions-calendar.module' ).then( m => m.SubscriptionsCalendarModule ),
+			},
+		],
 	},
 	{
 		path: ROUTES_MAP.empty, canLoad: [ AuthGuard ], loadChildren: () => import( '../subscription-manage/subscription-manage.module' ).then( m => m.SubscriptionManageModule ),

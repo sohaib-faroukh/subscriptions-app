@@ -43,6 +43,7 @@ export class AuthenticationService extends BaseCrudService<IAccount, HttpSearchO
 		let result: IAccount | undefined;
 		try {
 			const myToken = getItemFromStorage( this.tokenStorageKey );
+			// if ( !myToken ) throw new Error( 'not authenticated' );
 			if ( myToken ) {
 				result = ( await this.http.get<IAccount | undefined>( `${ this.apiUrl }/is-auth` ).toPromise() ) || undefined;
 			}

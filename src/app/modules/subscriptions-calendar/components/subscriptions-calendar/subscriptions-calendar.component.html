@@ -1,0 +1,91 @@
+<div class="page-wrapper px-4 pt-3">
+	<div class="container-fluid">
+		<div class="row my-2">
+			<a class="btn btn-sm btn-outline-primary ml-3" [routerLink]="['../']">
+				<i class="fa fa-list fa-2x"></i>
+			</a>
+		</div>
+		<table class="calendar-grid rounded table ">
+
+			<tr *ngFor="let week of [1,2,3,4,5]" class="td-row">
+
+				<td *ngFor="let day of getWeek(week)" class="cell" [ngClass]="{'bg-primary-light':isToday(day)}">
+					<span class="calendar-day text-muted text-shadow"> {{day}}</span>
+					<div class="align-items-center cell-footer d-flex justify-content-between position-absolute w-100  my-2"
+						style="bottom: 0;">
+
+						<div class="align-items-center d-md-flex d-none media"
+							*ngIf="data$ | async | subscriptionsOfDay:dataOf(day) as thisDaySubs">
+							<ng-container *ngFor="let sub of thisDaySubs">
+
+								<a *ngIf="getAccount(sub)" [routerLink]="['/'+routerMap.accounts,getAccount(sub)?.id]"
+									[id]="'id-'+getAccount(sub)?.id" class="pointer avatar">
+									<i [matTooltip]="getAccount(sub)?.fullName ||'...' "
+										class="fa fa-2x fa-user-circle text-black-50"></i>
+								</a>
+								<!-- <img class="rounded-circle shadow-sm pointer avatar" src="assets/images/users/client-3.jpg" alt=""> -->
+							</ng-container>
+
+						</div>
+
+						<!-- TODO: Button to open a modal of this day list of subscribers -->
+						<button type="button" class="btn btn-primary mr-2 p-0 rounded-circle" data-toggle="tooltip"
+							title="see more">
+							<i class="fa fa-angle-right fa-lg m-auto"></i>
+						</button>
+					</div>
+				</td>
+
+			</tr>
+
+
+		</table>
+
+		<!-- <div class="d-flex"> -->
+
+		<!-- * iterate weeks -->
+		<!-- <ng-container *ngFor="let day of currentMonthDays"> -->
+
+
+		<!-- <div class="col cell">
+					<span class="calendar-day text-muted text-shadow"> {{week.week}}</span>
+
+					<div class="row cell-footer justify-content-between align-items-center mt-auto w-100">
+
+						<div class="align-items-center d-md-flex d-none media my-2">
+							<img class="rounded-circle pointer shadow-sm avatar" src="assets/images/users/client-3.jpg" alt="">
+							<img class="rounded-circle shadow-sm pointer avatar" src="assets/images/users/client-3.jpg" alt="">
+							<i class="fa fa-2x fa-user-circle  pointer avatar text-black-50"></i>
+							<i class="fa fa-2x fa-user-circle  pointer avatar text-black-50"></i>
+							<i class="fa fa-2x fa-user-circle  pointer avatar text-black-50"></i>
+						</div>
+						<button type="button" class="btn btn-primary mr-2 p-0 rounded-circle" data-toggle="tooltip"
+							title="see more">
+							<i class="fa fa-angle-right fa-lg m-auto"></i>
+						</button>
+					</div>
+				</div> -->
+
+		<!-- * iterate days  -->
+		<!-- <ng-container *ngFor="let day of week?.days||[]"> -->
+
+		<!-- <div class="col cell"><span class="calendar-day text-muted text-shadow"> {{day}}</span></div> -->
+
+		<!-- </ng-container> -->
+
+
+		<!-- <div class="col cell"><span class="calendar-day text-muted text-shadow"> 1</span></div>
+				<div class="col cell"><span class="calendar-day text-muted text-shadow"> 1</span></div>
+				<div class="col cell"><span class="calendar-day text-muted text-shadow"> 1</span></div>
+				<div class="col cell"><span class="calendar-day text-muted text-shadow"> 1</span></div>
+				<div class="col cell"><span class="calendar-day text-muted text-shadow"> 1</span></div>
+				<div class="col cell"><span class="calendar-day text-muted text-shadow"> 1</span></div> -->
+
+
+
+		<!-- </ng-container> -->
+		<!-- </div> -->
+
+
+	</div>
+</div>

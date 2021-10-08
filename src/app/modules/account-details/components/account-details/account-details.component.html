@@ -1,0 +1,32 @@
+<style>
+	table th {
+		min-width: 8rem;
+	}
+</style>
+<div class="container">
+	<div class="row" *ngIf="account">
+
+		<table>
+			<tr *ngIf="account?.fullName">
+				<th>
+					Full Name
+				</th>
+				<td> <span class="text-capitalize"> {{account?.fullName||''}}</span></td>
+			</tr>
+			<tr *ngIf="account?.email">
+				<th>
+					Email
+				</th>
+				<td><a [href]="'mailto:'+account?.email?.trim()" class="text-muted"> {{account?.email||''}}</a></td>
+			</tr>
+			<tr *ngIf="account?.username">
+				<th>
+					Username
+				</th>
+				<td><span class="text-muted"> {{account?.username||''}}</span></td>
+			</tr>
+		</table>
+
+
+	</div>
+</div>
