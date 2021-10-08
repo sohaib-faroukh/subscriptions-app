@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SubscriptionsCalendarComponent } from './components/subscriptions-calendar/subscriptions-calendar.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ROUTES_MAP } from 'src/app/routes.map';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 const routes: Routes = [
 	{
@@ -17,6 +18,7 @@ const routes: Routes = [
 	imports: [
 		CommonModule,
 		RouterModule.forChild( routes ),
+		SharedModule,
 	],
 	exports: [ SubscriptionsCalendarComponent ],
 } )

@@ -1,4 +1,5 @@
 
+import { fullName } from 'utils/full-name';
 import { IdentityWithLogInfo, IIdentityWithLogInfo } from './generics/IdentityWithLogInfo';
 
 export interface IAccount extends IIdentityWithLogInfo {
@@ -23,6 +24,10 @@ export class Account extends IdentityWithLogInfo implements IAccount {
 	type: 'corporate' | 'personal' = 'personal';
 	lastLoginAt?: string = '';
 	isCorporate: boolean = false;
+
+	public fullName = (): string => {
+		return fullName( this.firstName, this.lastName );
+	}
 }
 
 export interface IAccountVM extends IAccount {

@@ -1,0 +1,54 @@
+.calendar-grid {
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: 0px 0px 7px 0px #0cda90;
+	border-color: #0cda90;
+}
+
+.calendar-grid .td-row:last-child .cell {
+	border-bottom: 0;
+}
+
+.calendar-grid .td-row .cell:last-child {
+	border-right: 0;
+}
+
+.calendar-grid .td-row .cell:last-child {
+	border-right: 0;
+}
+
+.calendar-grid .td-row .cell,
+.calendar-grid .td-row:last-child .cell:last-child {
+	height: calc(73vh / 5);
+	min-width: calc(80vw / 7);
+	max-width: calc(90vw / 7);
+	padding: 0;
+	display: table-cell;
+	border: 1px solid #2c9670;
+	position: relative;
+}
+
+.calendar-grid .cell .calendar-day {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 0.5rem 0.5em;
+	font-weight: 700;
+	font-size: 1.5rem;
+}
+
+.calendar-grid .cell .media img,
+.calendar-grid .cell .media i {
+	margin-left: -0.7rem;
+}
+
+.calendar-grid .cell .media img:first-child,
+.calendar-grid .cell .media i:first-child {
+	margin-left: 0.4rem;
+}
+
+.cell-footer .avatar,
+.cell-footer button {
+	width: 2rem;
+	height: 2rem;
+}
